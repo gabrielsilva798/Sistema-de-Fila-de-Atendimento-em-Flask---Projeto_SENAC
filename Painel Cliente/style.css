@@ -17,29 +17,61 @@ body .container {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.2784313725);
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
 body .container .top-div {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 10vh;
-  border: 1px solid rgba(0, 0, 0, 0.2784313725);
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
 body .container .middle-div {
   height: 50px;
-  border: 1px solid rgba(0, 0, 0, 0.2784313725);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
+}
+body .container .middle-div h3 {
+  color: red;
 }
 body .container .bottom-div {
   display: flex;
   gap: 10px;
   flex: 1;
   padding: 0.6rem;
-  border: 1px solid rgba(0, 0, 0, 0.2784313725);
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
 body .container .bottom-div .left,
 body .container .bottom-div .right {
   flex: 1;
   height: 300px;
-  border: 1px solid rgba(0, 0, 0, 0.2784313725);
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body .container .bottom-div .left h3 {
+  color: red;
+}
+body .container .bottom-div .right .fila-tabela {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+}
+body .container .bottom-div .right .fila-tabela th,
+body .container .bottom-div .right .fila-tabela td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+body .container .bottom-div .right .fila-tabela th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+body .container .bottom-div .right .fila-tabela .destaque-paciente {
+  background-color: rgb(200, 235, 232);
+  font-weight: bold;
+  font-size: 17px;
+  color: rgb(0, 7, 201);
 }/*# sourceMappingURL=style.css.map */

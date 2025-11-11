@@ -1,4 +1,4 @@
-$borda-test: 1px solid #00000047;
+$borda-test: 1px solid #00000057;
 
 * {
     margin: 0;
@@ -31,7 +31,14 @@ body {
 
         .middle-div {
             height: 50px;
-            border: $borda-test;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: $borda-test;           
+
+            h3{
+                color: red;
+            }
         }
 
         .bottom-div {
@@ -46,6 +53,44 @@ body {
                 flex: 1;
                 height: 300px;
                 border: $borda-test;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .left {
+                h3 {
+                    color: red;
+                }
+            }
+
+            .right {
+
+                .fila-tabela {
+                    width: 100%;
+                    height: 100%;
+                    border-collapse: collapse;
+
+                    th,
+                    td {
+                        border: 1px solid #ddd;
+                        padding: 10px;
+                    }
+
+                    th {
+                        background-color: #f2f2f2;
+                        color: #333;
+                    }
+
+                    .destaque-paciente {
+                        background-color: rgb(200, 235, 232);
+                        font-weight: bold;
+                        font-size: 17px;
+                        color: rgb(0, 7, 201);
+                    }
+
+                }
+
             }
         }
 
