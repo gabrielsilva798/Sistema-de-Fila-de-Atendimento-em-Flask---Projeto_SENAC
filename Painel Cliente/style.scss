@@ -1,0 +1,54 @@
+$borda-test: 1px solid #00000047;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    .container {
+        width: 90%;
+        max-width: 1500px;
+        padding: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border: $borda-test;
+
+        .top-div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 10vh;
+            border: $borda-test;
+        }
+
+        .middle-div {
+            height: 50px;
+            border: $borda-test;
+        }
+
+        .bottom-div {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            padding: 0.6rem;
+            border: $borda-test;
+
+            .left,
+            .right {
+                flex: 1;
+                height: 300px;
+                border: $borda-test;
+            }
+        }
+
+    }
+
+}
