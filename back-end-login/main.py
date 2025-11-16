@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # colocar essa chave em um .ENV depois
 # É OBRIGATÓRIA se você usar session ou flash(pesquisar mais depois).
-# Posso usar chave fixa pq é ligada a aplicação, não aos usuários.
+# Posso usar chave fixa pq é ligada a aplicação, não aos usuários
 app.secret_key = os.getenv("SECRET_KEY_FORM")
 
 def conectar():
