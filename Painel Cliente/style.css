@@ -155,12 +155,12 @@ body {
   background: #fff;
 }
 
-.left{
+.right{
   display: flex;
   flex-direction: column;
 }
 
-.left h3 {
+.right h3 {
   color: red;
 }
 
