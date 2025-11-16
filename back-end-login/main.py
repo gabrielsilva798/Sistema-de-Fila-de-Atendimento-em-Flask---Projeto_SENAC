@@ -48,7 +48,7 @@ def registrar():
 
         # Não usei .FORMAT pq o carinha falou que isso pode ajudar em SQL Injection.
         sql = """
-            INSERT INTO clientes 
+            INSERT INTO tb_clientes 
             (nome, email, nascimento, cpf, rg, senha)
             VALUES (%s, %s, %s, %s, %s, %s)
         """
@@ -79,7 +79,7 @@ def login():
         cursor = db.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT * FROM clientes
+            SELECT * FROM tb_clientes
             WHERE email = %s AND senha = %s
         """, (email, senha))
 
