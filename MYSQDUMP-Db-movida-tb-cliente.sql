@@ -1,13 +1,18 @@
-CREATE DATABASE db_movida CHARSET utf8mb4;
+CREATE DATABASE IF NOT EXISTS db_movida
+CHARSET utf8mb4
+COLLATE utf8mb4_general_ci;
 
-CREATE TABLE clientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
+USE db_movida;
+
+CREATE TABLE tb_clientes (
+    id INT  PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE,
     nascimento VARCHAR(20),
-    cpf VARCHAR(20),
-    rg VARCHAR(20),
-    senha VARCHAR(100)
+    cpf VARCHAR(20) UNIQUE,
+    rg VARCHAR(20) UNIQUE,
+    senha VARCHAR(100),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-SELECT * FROM clientes;
+SELECT * FROM tb_clientes;
