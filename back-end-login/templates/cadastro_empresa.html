@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Empresa - MOVIDA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='empresa.css') }}">
+</head>
+<body>
+
+
+  <header>
+    <h1>MOVIDA</h1>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#services">Serviços</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  
+  <div class="container">
+    <h1>Cadastro de Empresa</h1>
+    <p class="subtitulo">Preencha os dados abaixo para cadastrar sua empresa em nossa plataforma.</p>
+
+    <form action="/registrar_empresa" method="post" enctype="multipart/form-data">
+
+
+      <h2>Informações da Empresa</h2>
+
+      <div class="input-group">
+        <label for="nome">Nome da Empresa *</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite o nome da empresa" required>
+      </div>
+
+      <div class="input-group">
+        <label for="cnpj">CNPJ *</label>
+        <input type="text" id="cnpj" name="cnpj" maxlength="18" placeholder="00.000.000/0000-00" required>
+      </div>
+
+      <div class="input-group">
+        <label for="segmento">Segmento *</label>
+        <select id="segmento" name="segmento" required>
+          <option value="">Selecione</option>
+          <option>Clinica particular</option>
+          <option>Clinica pública</option>
+          <option>Hospital</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="funcionarios">Número de Funcionários</label>
+        <input type="number" id="funcionarios" name="funcionarios" min="1" placeholder="Ex: 25">
+      </div>
+
+      <div class="input-group">
+        <label for="site">Website</label>
+        <input type="url" id="site" name="site" placeholder="https://www.suaempresa.com.br">
+      </div>
+
+      <div class="input-group">
+        <label for="logo">Logotipo (opcional)</label>
+        <input type="file" id="logo" name="logo" accept="image/*">
+      </div>
+
+    
+      <h2>Contato</h2>
+
+      <div class="input-group">
+        <label for="email">E-mail Corporativo *</label>
+        <input type="email" id="email" name="email" placeholder="exemplo@empresa.com.br" required>
+      </div>
+
+      <div class="input-group">
+        <label for="telefone">Telefone *</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+      </div>
+
+      <h2>Endereço</h2>
+
+      <div class="input-group">
+        <label for="cep">CEP *</label>
+        <input type="text" id="cep" name="cep" maxlength="9" placeholder="00000-000" required>
+      </div>
+
+      <div class="input-group">
+        <label for="endereco">Endereço *</label>
+        <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro" required>
+      </div>
+
+      <div class="input-group">
+        <label for="cidade">Cidade *</label>
+        <input type="text" id="cidade" name="cidade" required>
+      </div>
+
+      <div class="input-group">
+        <label for="estado">Estado *</label>
+        <select id="estado" name="estado" required>
+          <option value="">Selecione</option>
+          <option>SP</option><option>RJ</option><option>MG</option><option>RS</option>
+          <option>PR</option><option>SC</option><option>BA</option><option>PE</option>
+          <option>CE</option><option>DF</option><option>Outros</option>
+        </select>
+      </div>
+      
+      <h2>Senhas</h2>
+
+      <div class="input-group">
+        <label for="senha">Senha *</label>
+        <input type="password" id="senha" name="senha" required>
+      </div>
+
+      <div class="input-group">
+        <label for="senha">Confimar Senha *</label>
+        <input type="password" id="confi_senha" name="confi_senha" required>
+      </div>
+
+      <div class="input-group">
+        <label for="descricao">Descrição da Empresa</label>
+        <textarea id="descricao" name="descricao" rows="4" placeholder="Conte um pouco sobre sua empresa..."></textarea>
+      </div>
+
+  
+      <button type="submit" class="btn">Cadastrar Empresa</button>
+
+      <div id="mensagem-sucesso" class="mensagem-sucesso" style="display: none;">
+        ✅ Cadastro realizado com sucesso!
+      </div>
+
+    </form>
+  </div>
+
+  <!-- <script src="cadastro-empresa.js"></script> -->
+</body>
+</html>

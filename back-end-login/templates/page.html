@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOVIDA - Atendimento Inteligente</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
+  
+</head>
+<body>
+
+
+  <header>
+    <h1>MOVIDA</h1>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#services">Serviços</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="side-buttons">
+      <a href="{{ url_for('cadastrar_paciente') }}" class="btn btn-outline">Paciente</a>
+      <a href="{{ url_for('cadastrar_empresa') }}" class="btn">Estabelecimento</a>
+    </div>
+  </header>
+
+
+  <section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2>Atendimento sem filas, mais tempo para viver.</h2>
+      <p>Com a MOVIDA, você sabe exatamente quando será atendido. Praticidade, transparência e eficiência em um só lugar.</p>
+      <a href="#sobre" class="btn">Saiba mais</a>
+    </div>
+  </section>
+
+ 
+  <section id="sobre" class="sobre fade-in">
+    <h2>Sobre Nós</h2>
+    <p>MOVIDA é uma plataforma digital que revoluciona o gerenciamento de filas em estabelecimentos. Nosso objetivo é oferecer praticidade para clientes e eficiência para empresas, tornando o atendimento mais ágil e humano.</p>
+    <a href="#services" class="btn">Conheça nossos diferenciais</a>
+  </section>
+
+ 
+  <section id="services" class="services fade-in">
+    <h2>Nossos diferenciais</h2>
+    <div class="service-cards">
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="">
+        <h3>Acompanhamento em tempo real</h3>
+        <p>Veja sua posição na fila e seja notificado quando estiver próximo de ser atendido.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/906/906175.png" alt="">
+        <h3>Painel digital de senhas</h3>
+        <p>Visualize o fluxo da fila em tempo real através de monitores ou dispositivos móveis.</p>
+      </div>
+
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828743.png" alt="">
+        <h3>Gestão inteligente</h3>
+        <p>Otimize o atendimento e melhore a experiência do cliente com dados e relatórios automáticos.</p>
+      </div>
+    </div>
+  </section>
+  
+
+
+<section id="galeria" class="galeria fade-in">
+  <h2>Galeria</h2>
+
+  <div class="galeria-container">
+
+    <div class="galeria-item">
+      <img src="t.jpg" alt="Clínica moderna">
+    </div>
+
+    <div class="galeria-item">
+      <img src="a.jpg" alt="Atendimento humanizado">
+    </div>
+
+    <div class="galeria-item">
+      <img src="papeis-de-parede-de-leopardo-de-alta-definicao-e-alta-definicao_909213-26.jpg" alt="Fila digital">
+    </div>
+
+    <div class="galeria-item">
+      <img src="s.png" alt="Tecnologia médica">
+    </div>
+
+  </div>
+</section>
+
+
+  <section class="testimonials fade-in">
+    <h2>O que nossos clientes dizem</h2>
+    <div class="testimonial-container">
+      <div class="testimonial">
+        <p>"O sistema da MOVIDA transformou o atendimento no meu consultório!"</p>
+        <h3>Maria Silva</h3>
+        <span>Gestora de Clínica</span>
+         <div class="stars">★★★★★</div>
+      </div>
+      <div class="testimonial">
+        <p>"Agora sei exatamente quando serei atendido. Simples e eficiente."</p>
+        <h3>João Souza</h3>
+        <span>Usuário</span>
+         <div class="stars">★★★★★</div>
+      </div>
+      <div class="testimonial">
+        <p>"Praticidade e agilidade! A experiência do cliente nunca foi tão boa."</p>
+        <h3>Ana Pereira</h3>
+        <span>Empresária</span>
+         <div class="stars">★★★★★</div>
+      </div>
+    </div>
+  </section>
+
+ 
+  <footer class="rodape">
+    <div class="footer-top">
+      <div class="footer-contact">
+        <p> (61) 3049-8501</p>
+        <p> contato@movida.com.br</p>
+      </div>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"></a>
+        <a href="#" aria-label="Instagram"></a>
+        <a href="#" aria-label="LinkedIn"></a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>MOVIDA  2025 - Todos os Direitos Reservados</p>
+      <p><a href="#">Política de Privacidade</a> | <a href="#">Política de Cookies</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

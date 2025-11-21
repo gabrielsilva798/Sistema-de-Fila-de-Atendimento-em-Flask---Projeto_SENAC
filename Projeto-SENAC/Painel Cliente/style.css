@@ -1,203 +1,79 @@
 * {
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/*formatacao do cabecalho*/
-header {
-  background: #16423C;
-  color: #C4DAD2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 10%;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-}
-
-#titulo {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-nav ul li a {
-  color: #fff;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-nav ul li a:hover {
-  color: #CFF3ED;
-}
-
-/*formatacao da imagem principal*/
-.hero {
-  background: url('m.jpg') center/cover no-repeat;
-  color: #0e0d0d;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0 20px;
-}
-
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 25px;
-  max-width: 600px;
-}
-
-/*cor do botao*/
-.btn {
-  background: #fff;
-  color: #16423c;
-  padding: 12px 30px;
-  border-radius: 30px;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background: #C4DAD2;
-}
-
-/* BODY */
 body {
-  background: linear-gradient(360deg, #338e81, #53e894, #C4DAD2);
-  background-attachment: fixed;
-  color: #1A1A1A;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-color: var(#C4DAD2);
 }
-
-.container {
+body .container {
   width: 90%;
   max-width: 1500px;
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid #00000057;
-  background-color: #fff;
-  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
-
-.top-div {
+body .container .top-div {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 10vh;
-  border: 1px solid #00000057;
-  border-radius: 8px;
-  background-color: #f6fbf8;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
-
-.middle-div {
+body .container .middle-div {
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #00000057;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  background-color: #f6fbf8;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
-
-.middle-div h3 {
-  color: #16423C;
+body .container .middle-div h3 {
+  color: red;
 }
-
-.bottom-div {
+body .container .bottom-div {
   display: flex;
   gap: 10px;
   flex: 1;
   padding: 0.6rem;
-  border: 1px solid #00000057;
-  border-radius: 8px;
-  background-color: #f6fbf8;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
 }
-
-.left,
-.right {
+body .container .bottom-div .left,
+body .container .bottom-div .right {
   flex: 1;
   height: 300px;
-  border: 1px solid #00000057;
+  border: 1px solid rgba(0, 0, 0, 0.3411764706);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #fff;
 }
-
-.left{
-  display: flex;
-  flex-direction: column;
-}
-
-.left h3 {
+body .container .bottom-div .left h3 {
   color: red;
 }
-
-.chamados-fila{
-  width: 60%;
-}
-
-.chamados-fila td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-}
-
-.fila-tabela {
+body .container .bottom-div .right .fila-tabela {
   width: 100%;
-  height: 102%;
+  height: 100%;
   border-collapse: collapse;
-  border-radius: 8px;
 }
-
-.fila-tabela th,
-.fila-tabela td {
+body .container .bottom-div .right .fila-tabela th,
+body .container .bottom-div .right .fila-tabela td {
   border: 1px solid #ddd;
   padding: 10px;
   justify-content: center;
 }
-
-.fila-tabela th {
-  text-transform: uppercase;
-  background-color: #1e7267;
-  color: #fff;
+body .container .bottom-div .right .fila-tabela th {
+  background-color: #f2f2f2;
+  color: #333;
 }
-
-.destaque-paciente {
-  background-color: #c8ebe8;
+body .container .bottom-div .right .fila-tabela .destaque-paciente {
+  background-color: rgb(200, 235, 232);
   font-weight: bold;
   font-size: 17px;
-  color: #0007c9;
-}
+  color: rgb(0, 7, 201);
+}/*# sourceMappingURL=style.css.map */

@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, session, flash, url
 import mysql.connector, os
 from dotenv import load_dotenv
 
+load_dotenv()
+
 app = Flask(__name__)
 
 # colocar essa chave em um .ENV depois
@@ -20,25 +22,25 @@ def conectar():
 # Aqui pode ser a LandiPage
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("page.html")
+#------------------------------------------------CADASTRO PACIENTE-------------------------------------------------------------
+@app.route("/cadastro_paciente")
+def cadastrar_paciente():
+    return render_template("cadastro_paciente.html")
 
-@app.route("/cadastro")
-def cadastrar():
-    return render_template("cadastro.html")
+# rota para cadatrar pacientes
+@app.route("/registrar_paciente", methods=["POST"])
+def registrar_paciente():
 
-# rota para cadatrar usuários
-@app.route("/registrar", methods=["POST"])
-def registrar():
+    nome_paciente = request.form["nome_form"]
+    email_paciente = request.form["email_form"]
+    nascimento_paciente = request.form["nascimento_form"]
+    cpf_paciente = request.form["cpf_form"]
+    rg_paciente = request.form["rg_form"]
+    senha_paciente = request.form["senha_form"]
+    confirma_paciente = request.form["confi_senha_form"]
 
-    nome = request.form["nome_form"]
-    email = request.form["email_form"]
-    nascimento = request.form["nascimento_form"]
-    cpf = request.form["cpf_form"]
-    rg = request.form["rg_form"]
-    senha = request.form["senha_form"]
-    confirma = request.form["confi_senha_form"]
-
-    if senha != confirma:
+    if senha_paciente != confirma_paciente:
         flash("As senhas não coincidem!")
         return redirect("/")
 
@@ -46,14 +48,13 @@ def registrar():
         db = conectar()
         cursor = db.cursor()
 
-        # Não usei .FORMAT pq o carinha falou que isso pode ajudar em SQL Injection.
         sql = """
             INSERT INTO tb_clientes 
             (nome, email, nascimento, cpf, rg, senha)
             VALUES (%s, %s, %s, %s, %s, %s)
         """
 
-        valores = (nome, email, nascimento, cpf, rg, senha)
+        valores = (nome_paciente, email_paciente, nascimento_paciente, cpf_paciente, rg_paciente, senha_paciente)
 
         cursor.execute(sql, valores)
         db.commit()
@@ -67,12 +68,12 @@ def registrar():
         return redirect("/")
 
 
-# rota de login
-@app.route("/login", methods=["POST"])
-def login():
+# rota de login do paciente
+@app.route("/login_paciente", methods=["POST"])
+def login_paciente():
 
-    email = request.form["email-login"]
-    senha = request.form["senha-login"]
+    email_paciente = request.form["email-login"]
+    senha_paciente = request.form["senha-login"]
 
     try:
         db = conectar()
@@ -81,7 +82,7 @@ def login():
         cursor.execute("""
             SELECT * FROM tb_clientes
             WHERE email = %s AND senha = %s
-        """, (email, senha))
+        """, (email_paciente, senha_paciente))
 
         usuario = cursor.fetchone()
 
@@ -96,6 +97,72 @@ def login():
         print(e)
         flash("Erro ao realizar login")
         return redirect("/")
+    
+#----------------------------------------------ESTABELECIMENTO ROTAS--------------------------------------------------
+# rota para cadatrar estabelecimentos
+@app.route("/cadastro_empresa")
+def cadastrar_empresa():
+    return render_template("cadastro_empresa.html")
+
+# rota para cadatrar estabeleimentos
+@app.route("/registrar_empresa", methods=["POST"])
+def registrar_empresa():
+
+    nome_empresa = request.form["nome"]
+    cnpj_empresa = request.form["cnpj"]
+    segmento_empresa = request.form["segmento"]
+    funcionarios_empresa = request.form.get("funcionarios")
+    site_empresa = request.form.get("site")
+    logo_file = request.files.get("logo")
+    logo_empresa = logo_file.read() if logo_file and logo_file.filename != "" else None
+    email_empresa = request.form["email"]
+    telefone_empresa = request.form["telefone"]
+    cep_empresa = request.form["cep"]
+    endereco_empresa = request.form["endereco"]
+    cidade_empresa = request.form["cidade"]
+    estado_empresa = request.form["estado"]
+    senha_empresa = request.form["senha"]
+    confirma_empresa = request.form["confi_senha"]
+    descricao_empresa = request.form.get("descricao")
+
+    if senha_empresa != confirma_empresa:
+        flash("As senhas não coincidem!")
+        return redirect("/")
+
+    try:
+        db = conectar()
+        cursor = db.cursor()
+
+        sql = """
+            INSERT INTO tb_empresa
+            (nome, cnpj, segmento, funcionarios, site, logo,
+            email, telefone, cep, endereco, cidade, estado,
+            senha, confirmar_senha, descricao)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+
+
+        valores = (
+            nome_empresa, cnpj_empresa, segmento_empresa,
+            funcionarios_empresa, site_empresa,
+            logo_empresa, email_empresa, telefone_empresa,
+            cep_empresa, endereco_empresa, cidade_empresa,
+            estado_empresa, senha_empresa, confirma_empresa, descricao_empresa
+        )
+
+
+        cursor.execute(sql, valores)
+        db.commit()
+
+
+        flash("Empresa cadastrada com sucesso!")
+        return redirect("/")
+
+    except Exception as e:
+        print("Erro:", e)
+        flash("Erro ao cadastrar a empresa!")
+        return redirect("/")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
