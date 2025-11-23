@@ -1,33 +1,36 @@
 from flask import render_template, request, redirect, session, flash
-from .models import conectar
+from flask_login import login_required, login_user, logout_user, current_user
+from .models import conectar, Usuario
+from movida import bcrypt
+
 
 def init_routes(app):
 
-    # Aqui pode ser a LandiPage
     @app.route("/")
     def index():
         return render_template("page.html")
 
-    #------------------------------------------------CADASTRO PACIENTE-------------------------------------------------------------
+# ---------------- CADASTRO DE PACIENTE -----------------------
     @app.route("/cadastro_paciente")
     def cadastrar_paciente():
         return render_template("cadastro_paciente.html")
 
-    # rota para cadatrar pacientes
     @app.route("/registrar_paciente", methods=["POST"])
     def registrar_paciente():
 
-        nome_paciente = request.form["nome_form"]
-        email_paciente = request.form["email_form"]
-        nascimento_paciente = request.form["nascimento_form"]
-        cpf_paciente = request.form["cpf_form"]
-        rg_paciente = request.form["rg_form"]
-        senha_paciente = request.form["senha_form"]
-        confirma_paciente = request.form["confi_senha_form"]
+        nome = request.form["nome_form"]
+        email = request.form["email_form"]
+        nascimento = request.form["nascimento_form"]
+        cpf = request.form["cpf_form"]
+        rg = request.form["rg_form"]
+        senha = request.form["senha_form"]
+        confirma = request.form["confi_senha_form"]
 
-        if senha_paciente != confirma_paciente:
+        if senha != confirma:
             flash("As senhas não coincidem!")
             return redirect("/")
+
+        senha_hash = bcrypt.generate_password_hash(senha).decode("utf-8")
 
         try:
             db = conectar()
@@ -39,7 +42,7 @@ def init_routes(app):
                 VALUES (%s, %s, %s, %s, %s, %s)
             """
 
-            valores = (nome_paciente, email_paciente, nascimento_paciente, cpf_paciente, rg_paciente, senha_paciente)
+            valores = (nome, email, nascimento, cpf, rg, senha_hash)
 
             cursor.execute(sql, valores)
             db.commit()
@@ -52,37 +55,55 @@ def init_routes(app):
             flash("Erro ao cadastrar!")
             return redirect("/")
 
-    # rota de login do paciente
+# ------------------------ LOGIN PACIENTE ------------------------
     @app.route("/login_paciente", methods=["POST"])
     def login_paciente():
 
-        email_paciente = request.form["email-login"]
-        senha_paciente = request.form["senha-login"]
+        email = request.form["email-login"]
+        senha = request.form["senha-login"]
 
         try:
             db = conectar()
             cursor = db.cursor(dictionary=True)
 
-            cursor.execute("""
-                SELECT * FROM tb_clientes
-                WHERE email = %s AND senha = %s
-            """, (email_paciente, senha_paciente))
-
+            cursor.execute("SELECT * FROM tb_clientes WHERE email = %s", (email,))
             usuario = cursor.fetchone()
 
-            if usuario:
-                session["usuario"] = usuario["nome"]
-                return "Login realizado! Bem-vindo, " + usuario["nome"]
-            else:
-                flash("E-mail ou senha incorretos")
-                return redirect("/")
+            if usuario and bcrypt.check_password_hash(usuario["senha"], senha):
+
+                user_obj = Usuario(
+                    id=usuario["id"],
+                    nome=usuario["nome"],
+                    email=usuario["email"]
+                )
+
+                login_user(user_obj)
+
+                flash(f"Bem-vindo, {usuario['nome']}!")
+                return redirect("/dashboard")
+
+            flash("E-mail ou senha incorretos")
+            return redirect("/")
 
         except Exception as e:
-            print(e)
+            print("Erro:", e)
             flash("Erro ao realizar login")
             return redirect("/")
 
-    #----------------------------------------------ESTABELECIMENTO ROTAS--------------------------------------------------
+    @app.route("/dashboard")
+    @login_required
+    def dashboard():
+        return f"Área protegida! Usuário logado: {current_user.nome}"
+
+# ---------------------------- LOGOUT: nem existe, mas a rota tá aí ------------------------------
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        flash("Você saiu da sua conta.")
+        return redirect("/")
+
+# ------------------ CADASTRO DE EMPRESA --------------------------
     @app.route("/cadastro_empresa")
     def cadastrar_empresa():
         return render_template("cadastro_empresa.html")
@@ -111,6 +132,8 @@ def init_routes(app):
             flash("As senhas não coincidem!")
             return redirect("/")
 
+        senha_hash = bcrypt.generate_password_hash(senha_empresa).decode("utf-8")
+
         try:
             db = conectar()
             cursor = db.cursor()
@@ -121,14 +144,14 @@ def init_routes(app):
                 email, telefone, cep, endereco, cidade, estado,
                 senha, confirmar_senha, descricao)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """
+            """
 
             valores = (
                 nome_empresa, cnpj_empresa, segmento_empresa,
                 funcionarios_empresa, site_empresa,
                 logo_empresa, email_empresa, telefone_empresa,
                 cep_empresa, endereco_empresa, cidade_empresa,
-                estado_empresa, senha_empresa, confirma_empresa, descricao_empresa
+                estado_empresa, senha_hash, senha_hash, descricao_empresa
             )
 
             cursor.execute(sql, valores)
@@ -141,4 +164,3 @@ def init_routes(app):
             print("Erro:", e)
             flash("Erro ao cadastrar a empresa!")
             return redirect("/")
-
