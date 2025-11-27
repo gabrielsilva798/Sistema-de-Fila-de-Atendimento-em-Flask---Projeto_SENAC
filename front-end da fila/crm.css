@@ -1,0 +1,136 @@
+/* PALETA */
+:root {
+    --verde-escuro: #123C35;
+    --verde-claro: #2F6658;
+    --cinza-gelo: #DFECE7;
+    --cinza-claro: #F1F5F1;
+    --amarelo: #E7B325;
+    --laranja: #E7681B;
+    --vermelho: #C92828;
+    --white: #ffffff;
+}
+
+/* GERAL */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--cinza-claro);
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: var(--verde-escuro);
+    height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar nav a {
+    display: block;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.sidebar nav a:hover {
+    background: var(--verde-claro);
+}
+
+/* CONTEÚDO */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* TOPO */
+.topbar {
+    display: flex;
+    background: var(--white);
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+}
+
+.profile {
+    width: 40px;
+    height: 40px;
+    background: var(--verde-escuro);
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.card {
+    width: 23%;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card.green { background: var(--verde-claro); }
+.card.yellow { background: var(--amarelo); }
+.card.orange { background: var(--laranja); }
+.card.red { background: var(--vermelho); }
+
+.numero {
+    font-size: 42px;
+    display: block;
+    margin-top: 10px;
+}
+
+/* SETORES */
+.clinica h2 {
+    margin-bottom: 15px;
+}
+
+.setores {
+    display: flex;
+    justify-content: space-between;
+}
+
+.setor {
+    width: 23%;
+    padding: 20px;
+    background: var(--cinza-gelo);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.setor button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: var(--verde-escuro);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.setor button:hover {
+    background: var(--verde-claro);
+}

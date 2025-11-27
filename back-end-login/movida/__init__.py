@@ -24,4 +24,3 @@ def create_app():
     init_routes(app)
 
     return app
-

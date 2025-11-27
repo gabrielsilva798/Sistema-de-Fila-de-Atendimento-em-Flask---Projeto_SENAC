@@ -16,6 +16,7 @@ CREATE TABLE tb_clientes (
 );
 
 SELECT * FROM tb_clientes;
+DELETE FROM tb_clientes WHERE id = 1;
 
 /*-------------------------------------------------------------------------------------------------*/
 
@@ -32,7 +33,7 @@ CREATE TABLE tb_empresa (
     cep VARCHAR(9) NOT NULL,
     endereco VARCHAR(200) NOT NULL,
     cidade VARCHAR(120) NOT NULL,
-    estado VARCHAR(20) NOT NULL,
+    estado CHAR(2) NOT NULL,
     senha VARCHAR(255) NOT NULL,
     confirmar_senha VARCHAR(255) NOT NULL,
     descricao TEXT
@@ -40,3 +41,26 @@ CREATE TABLE tb_empresa (
 
 
 SELECT * FROM tb_empresa;
+DELETE FROM tb_empresa WHERE id = 1;
+#--------------------------------------------------- FILA ---------------------------------------
+
+-- TABELA: pacientes
+CREATE TABLE IF NOT EXISTS pacientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cpf VARCHAR(20),
+    nome VARCHAR(255),
+    nascimento DATE,
+    telefone VARCHAR(20),
+    sintomas TEXT,
+    classificacao ENUM('verde','amarelo','laranja','vermelho'),
+    responsavel VARCHAR(255)
+);
+
+-- TABELA: fila
+CREATE TABLE IF NOT EXISTS fila (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT,
+    chamado BOOLEAN DEFAULT FALSE,
+    chegada TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+);

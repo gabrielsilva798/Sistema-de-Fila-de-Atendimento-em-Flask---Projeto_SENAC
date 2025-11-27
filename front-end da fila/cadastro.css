@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #dfece7;
+}
+
+/* HEADER */
+header {
+    background: #123c35;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-size: 26px;
+}
+
+/* CONTAINER CENTRAL */
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.form-box {
+    background: white;
+    padding: 30px 40px;
+    width: 600px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 12px #b8c8c3;
+}
+
+/* CAMPOS */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full textarea {
+    height: 120px;
+}
+
+label {
+    color: #123c35;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #9bb3ac;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #2f6658;
+}
+
+/* BOTÃO */
+.btn {
+    width: 100%;
+    padding: 15px;
+    background: #2f6658;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #123c35;
+}
