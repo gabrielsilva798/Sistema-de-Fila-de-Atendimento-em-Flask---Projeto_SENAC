@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Fila | MOVIDA</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fila.css') }}">
+</head>
+
+<body>
+
+<header class="header">
+    <h1>MOVIDA</h1>
+    <a href="{{ url_for('logout') }}" class="btn-sair">Sair</a>
+</header>
+
+<div class="container">
+
+    <section class="card destaque">
+        <h2>Olá, {{ paciente_nome }}!</h2>
+        <p class="texto-info">Você está acompanhando sua posição na fila do estabelecimento:</p>
+        <h3 class="empresa">{{ empresa_nome }}</h3>
+    </section>
+
+    <section class="card posicao">
+        <h2>Sua posição atual:</h2>
+        <div id="posicaoAtual" class="posicao-num">
+            {{ posicao }}
+        </div>
+
+        <p class="classificacao">
+            Classificação: <span class="class {{ paciente_classificacao }}">{{ paciente_classificacao }}</span>
+        </p>
+
+        <p class="tempo">
+            Tempo médio de espera: <strong>{{ tempo_medio }}</strong>
+        </p>
+    </section>
+
+    <section class="card ultimos">
+        <h2>Últimos Chamados</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Classificação</th>
+                    <th>Horário</th>
+                </tr>
+            </thead>
+            <tbody id="listaUltimos">
+                {% for u in ultimos %}
+                <tr>
+                    <td>{{ u.nome }}</td>
+                    <td class="class {{ u.classificacao }}">{{ u.classificacao }}</td>
+                    <td>{{ u.saida.strftime('%H:%M') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</div>
+<div id="pacienteData" data-id="{{ paciente_id }}"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    const pacienteId = document.getElementById("pacienteData").dataset.id;
+
+    socket.on("atualizar_fila_paciente", (dados) => {
+        if (String(dados.paciente_id) === String(pacienteId)) {
+            document.getElementById("posicaoAtual").innerText = dados.posicao;
+        }
+    });
+
+    socket.on("atualizar_ultimos", (lista) => {
+        const corpo = document.getElementById("listaUltimos");
+        corpo.innerHTML = "";
+
+        lista.forEach(u => {
+            corpo.innerHTML += `
+                <tr>
+                    <td>${u.nome}</td>
+                    <td class="class ${u.classificacao}">${u.classificacao}</td>
+                    <td>${u.saida}</td>
+                </tr>
+            `;
+        });
+    });
+</script>
+
+</body>
+</html>

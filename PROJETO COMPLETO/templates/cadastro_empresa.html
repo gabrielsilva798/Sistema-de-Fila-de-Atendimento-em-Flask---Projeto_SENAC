@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Estabelecimento | MOVIDA</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/empresa.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="form-section">
+
+            <a href="{{ url_for('index') }}" class="back-link">← Voltar</a>
+
+            <h2>Cadastro do Estabelecimento</h2>
+
+            <!-- FLASH MESSAGES -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('registrar_empresa') }}" method="POST" enctype="multipart/form-data">
+
+                <div class="input-box">
+                    <label for="nome">Nome da Clínica / Hospital</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Ex: Hospital Vida">
+                </div>
+
+                <div class="input-box">
+                    <label for="cnpj">CNPJ</label>
+                    <input type="text" id="cnpj" name="cnpj" required placeholder="00.000.000/0000-00">
+                </div>
+
+                <div class="input-box">
+                    <label for="segmento">Segmento</label>
+                    <select id="segmento" name="segmento" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="Clinica particular">Clínica particular</option>
+                        <option value="Clinica pública">Clínica pública</option>
+                        <option value="Hospital">Hospital</option>
+                    </select>
+                </div>
+
+                <div class="input-box">
+                    <label for="funcionarios">Quantidade de Profissionais</label>
+                    <input type="number" id="funcionarios" name="funcionarios" min="1" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="site">Site (opcional)</label>
+                    <input type="text" id="site" name="site" placeholder="https://sua-clinica.com">
+                </div>
+
+                <div class="input-box">
+                    <label for="logo">Logo da Clínica (opcional)</label>
+                    <input type="file" id="logo" name="logo" accept="image/*">
+                </div>
+
+                <div class="input-box">
+                    <label for="email">E-mail de acesso</label>
+                    <input type="email" id="email" name="email" required placeholder="email@exemplo.com">
+                </div>
+
+                <div class="input-box">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" required placeholder="(61) 99999-9999">
+                </div>
+
+                <div class="input-box">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" name="endereco" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" name="cidade" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="estado">Estado</label>
+                    <input type="text" id="estado" name="estado" maxlength="2" required placeholder="DF">
+                </div>
+
+                <div class="input-box">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="confirmar_senha">Confirmar Senha</label>
+                    <input type="password" id="confirmar_senha" name="confirmar_senha" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="descricao">Descrição do Estabelecimento</label>
+                    <textarea id="descricao" name="descricao" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn">Cadastrar</button>
+
+                <p class="register-text">
+                    Já tem conta?  
+                    <a href="{{ url_for('login_estabelecimento') }}">Entrar</a>
+                </p>
+
+            </form>
+        </div>
+
+        <div class="image-section">
+            <img src="{{ url_for('static', filename='img/hospital-register.svg') }}" alt="Cadastro da clínica">
+        </div>
+
+    </div>
+
+</body>
+</html>

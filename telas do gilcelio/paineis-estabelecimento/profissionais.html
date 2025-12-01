@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profissionais - Sistema Clínico</title>
+    <link rel="stylesheet" href="profissionais-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>Clínica Med</h2>
+        <nav>
+            <ul>
+                <li><a href="tela-principal-estabelecimento.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="cadastrar-paciente.html"><i class="fas fa-user-plus"></i> Adicionar Paciente</a></li>
+                <li><a href="lista-pacientes.html"><i class="fas fa-users"></i> Lista de Pacientes</a></li>
+                <li class="active"><a href="profissionais.html"><i class="fas fa-user-md"></i> Profissionais</a></li>
+                <li><a href="configuracoes-estabelecimento.html"><i class="fas fa-cogs"></i> Configurações</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+
+        <header class="content-header">
+            <h1><i class="fas fa-user-md"></i> Gerenciamento de Profissionais</h1>
+        </header>
+
+        <div class="toolbar">
+            <input type="text" placeholder="Buscar por nome ou especialidade..." class="search-prof-input">
+            <button class="btn-add-prof"><i class="fas fa-plus-circle"></i> Cadastrar Novo Profissional</button>
+        </div>
+
+        <div class="content-body">
+
+            <aside class="filtros">
+                <h3>Filtros de Status</h3>
+
+                <label>Especialidade</label>
+                <select>
+                    <option>Todas</option>
+                    <option>Clínico Geral</option>
+                    <option>Pediatria</option>
+                    <option>Enfermagem</option>
+                    <option>Ortopedia</option>
+                </select>
+
+                <label>Status</label>
+                <select>
+                    <option>Todos</option>
+                    <option>Disponível</option>
+                    <option>Em Atendimento</option>
+                    <option>Em Pausa</option>
+                </select>
+
+                <button class="btn-filter"><i class="fas fa-filter"></i> Aplicar Filtros</button>
+            </aside>
+
+            <main class="lista-profissionais">
+
+                <div class="prof-card">
+                    <div class="nome">Dr. João Almeida</div>
+                    <div class="especialidade">Clínico Geral | CRM: 12345</div>
+                    <div class="status disponivel">Disponível</div>
+                    <div class="horario">08:00 às 18:00</div>
+                    <div class="actions">
+                        <button class="btn-action edit"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-action delete"><i class="fas fa-trash-alt"></i> Excluir</button>
+                    </div>
+                </div>
+
+                <div class="prof-card">
+                    <div class="nome">Enfª. Maria Santos</div>
+                    <div class="especialidade">Enfermagem | COREN: 98765</div>
+                    <div class="status atendimento">Em atendimento</div>
+                    <div class="horario">10:00 às 22:00</div>
+                    <div class="actions">
+                        <button class="btn-action edit"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-action delete"><i class="fas fa-trash-alt"></i> Excluir</button>
+                    </div>
+                </div>
+
+                <div class="prof-card">
+                    <div class="nome">Dr. Pedro Costa</div>
+                    <div class="especialidade">Ortopedia | CRM: 54321</div>
+                    <div class="status pausa">Em pausa</div>
+                    <div class="horario">12:00 às 20:00</div>
+                    <div class="actions">
+                        <button class="btn-action edit"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-action delete"><i class="fas fa-trash-alt"></i> Excluir</button>
+                    </div>
+                </div>
+                <div class="prof-card">
+                    <div class="nome">Enfª. Roberta Diniz</div>
+                    <div class="especialidade">Enfermagem | COREN: 44332</div>
+                    <div class="status atendimento">Em atendimento</div>
+                    <div class="horario">07:00 às 17:00</div>
+                    <div class="actions">
+                        <button class="btn-action edit"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-action delete"><i class="fas fa-trash-alt"></i> Excluir</button>
+                    </div>
+
+            </main>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

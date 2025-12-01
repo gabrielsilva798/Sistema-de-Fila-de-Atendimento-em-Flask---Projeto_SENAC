@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Paciente</title>
+    <link rel="stylesheet" href="cadastrar-paciente-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>Clínica Med</h2>
+        <nav>
+            <ul>
+                <li><a href="tela-principal-estabelecimento.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li class="active"><a href="configuracoes-estabelecimento.html"><i class="fas fa-user-plus"></i> Adicionar Paciente</a></li>
+                <li><a href="lista-pacientes.html"><i class="fas fa-users"></i> Lista de Pacientes</a></li>
+                <li><a href="profissionais.html"><i class="fas fa-user-md"></i> Profissionais</a></li>
+                <li><a href="configuracoes-estabelecimento.html"><i class="fas fa-cogs"></i> Configurações</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+
+        <header class="content-header">
+            <h1>Cadastro de Paciente</h1>
+        </header>
+
+        <div class="container">
+            <form class="form-box" method="POST" action="/cadastro">
+                <div class="form-group">
+                    <label>CPF do Paciente</label>
+                    <input type="text" placeholder="Digite o seu CPF" name="cpf" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" placeholder="Digite o nome do paciente" name="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Data de nascimento</label>
+                    <input type="date" name="nascimento" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="text" placeholder="(00) 00000-0000" name="telefone" required>
+                </div>
+
+                <div class="form-group full">
+                    <label>Sintomas</label>
+                    <textarea placeholder="Descreva os sintomas do paciente" name="sintomas"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Classificação de risco</label>
+                    <select name="classificacao">
+                        <option value="selecione">Selecione</option>
+                        <option value="verde">Verde - Baixo risco</option>
+                        <option value="amarelo">Amarelo - Atenção</option>
+                        <option value="laranja">Laranja - Urgente</option>
+                        <option value="vermelho">Vermelho - Emergência</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Responsável pelo atendimento</label>
+                    <select name="classificacao">
+                        <option value="selecione">Selecione</option>
+                        <option value="doutor_joao">Dr. João Almeida</option>
+                        <option value="doutor_maria">Enfª. Maria Santos</option>
+                        <option value="doutor_pedro">Dr. Pedro Costa</option>
+                        <option value="doutor_luiza">Dra. Luiza Ribeiro</option>
+                    </select>
+                </div>
+
+                <button class="btn" type="submit">Cadastrar Paciente</button>
+
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

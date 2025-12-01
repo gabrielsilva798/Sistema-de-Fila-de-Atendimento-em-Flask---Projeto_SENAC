@@ -1,0 +1,144 @@
+/* PALETA (Reutilizando cores consistentes) */
+:root {
+  --verde-escuro: #123C35;
+  --verde-claro: #2F6658;
+  --cinza-gelo: #DFECE7;
+  --cinza-claro: #F1F5F1;
+  --white: #ffffff;
+  --text-dark: var(--verde-escuro);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--cinza-gelo);
+  display: flex; /* ATIVA O LAYOUT LADO A LADO */
+  min-height: 100vh;
+}
+
+/* --- ESTILIZAÇÃO DA SIDEBAR DE NAVEGAÇÃO --- */
+.sidebar {
+  width: 250px;
+  background-color: var(--verde-escuro);
+  color: var(--white);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--white);
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 12px 10px;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s;
+  border-radius: 6px;
+}
+
+.sidebar nav ul li a i {
+  margin-right: 10px;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li.active a {
+  background-color: var(--verde-claro);
+}
+
+/* --- CONTEÚDO PRINCIPAL (LAYOUT) --- */
+.main-content {
+  flex-grow: 1; /* Ocupa o espaço restante */
+  padding: 30px;
+}
+
+.content-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.content-header h1 {
+  color: var(--verde-escuro);
+  font-weight: bold;
+}
+
+
+/* CONTAINER CENTRALIZADOR DO FORMULÁRIO (dentro do main-content) */
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0; /* Removido margin superior, usando o content-header */
+}
+
+.form-box {
+  background: white;
+  padding: 30px 40px;
+  width: 600px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 12px #b8c8c3;
+}
+
+/* CAMPOS */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full textarea {
+  height: 120px;
+}
+
+label {
+  color: var(--text-dark);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input, select, textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #9bb3ac;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--verde-claro);
+}
+
+/* BOTÃO */
+.btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--verde-claro);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--verde-escuro);
+}
