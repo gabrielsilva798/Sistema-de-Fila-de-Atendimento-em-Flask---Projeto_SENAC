@@ -1,0 +1,315 @@
+/* PALETA DE CORES (Padronizada) */
+:root {
+  --verde-escuro: #123C35;
+  --verde-claro: #2F6658;
+  --cinza-gelo: #DFECE7;
+  --cinza-claro: #F1F5F1;
+  --amarelo: #E7B325;
+  --laranja: #E7681B;
+  --vermelho: #C92828;
+  --white: #ffffff;
+
+  /* Mapeamento de variáveis genéricas */
+  --primary-color: var(--verde-escuro);
+  --secondary-color: #6c757d;
+  --background-light: var(--cinza-claro);
+  --text-dark: var(--verde-escuro);
+  --sidebar-bg: var(--verde-escuro);
+}
+
+/* GERAL E LAYOUT PRINCIPAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- ESTILIZAÇÃO DA SIDEBAR DE NAVEGAÇÃO --- */
+.sidebar {
+  width: 250px;
+  background-color: var(--sidebar-bg);
+  color: var(--white);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--white);
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 12px 10px;
+  color: var(--white);
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s;
+  border-radius: 6px;
+}
+
+.sidebar nav ul li a i {
+  margin-right: 10px;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li.active a {
+  background-color: var(--verde-claro);
+}
+
+/* --- CONTEÚDO PRINCIPAL E HEADER --- */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+.content-header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.content-header h1 {
+  color: var(--verde-escuro);
+  font-weight: bold;
+}
+
+/* --- BARRA DE FERRAMENTAS SUPERIOR (Nova Seção) --- */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.search-prof-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-add-prof {
+    background: var(--laranja); /* Destaque para ação principal */
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Evita quebra de linha no texto do botão */
+}
+
+.btn-add-prof:hover {
+    background: #E75200;
+}
+
+.btn-add-prof i {
+    margin-right: 8px;
+}
+
+/* --- FILTROS E LISTA --- */
+.content-body {
+  display: flex;
+}
+
+/* FILTROS (Manteve-se o estilo original) */
+.filtros {
+  width: 220px;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(184, 200, 195, 0.5);
+  height: fit-content;
+}
+
+.filtros h3 {
+  margin-top: 0;
+  color: var(--verde-escuro);
+}
+
+.filtros label {
+  display: block;
+  font-weight: bold;
+  color: var(--verde-escuro);
+  margin-top: 15px;
+}
+
+.filtros select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #9bb3ac;
+  margin-top: 5px;
+}
+
+.btn-filter { /* Alterado de .btn para .btn-filter */
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--verde-claro);
+  border: none;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-filter:hover {
+  background: var(--verde-escuro);
+}
+
+/* LISTA DE PROFISSIONAIS */
+.lista-profissionais {
+  flex: 1;
+  margin-left: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.prof-card {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(184, 200, 195, 0.5);
+}
+
+.nome {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--verde-escuro);
+}
+
+.especialidade {
+  color: #555; /* Cor um pouco mais escura */
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+
+.status {
+  padding: 6px 10px;
+  display: inline-block;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.horario {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #003322;
+  margin-bottom: 15px; /* Espaço para as ações */
+}
+
+/* Cores dos status no card de profissionais */
+.disponivel { background: #2fa141; color: var(--white); } /* Verde */
+.atendimento { background: var(--amarelo); color: black; }
+.pausa { background: var(--laranja); color: var(--white); }
+
+/* --- AÇÕES DO CARD (Novo) --- */
+.actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--white);
+    transition: 0.3s;
+}
+
+.btn-action.edit {
+    background: var(--verde-claro);
+}
+
+.btn-action.edit:hover {
+    background: var(--verde-escuro);
+}
+
+.btn-action.delete {
+    background: var(--vermelho);
+}
+
+.btn-action.delete:hover {
+    background: #a81c1c;
+}
+
+/* Responsividade Básica */
+@media (max-width: 900px) {
+  /* ... (Estilos de responsividade originais) ... */
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+  }
+  
+  .sidebar nav ul {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .sidebar nav ul li a {
+    padding: 10px 5px;
+    text-align: center;
+  }
+  
+  .sidebar h2 {
+    display: none;
+  }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-prof-input, .btn-add-prof {
+        width: 100%;
+    }
+
+  /* Layout do conteúdo */
+  .content-body {
+    flex-direction: column;
+  }
+
+  .filtros {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .lista-profissionais {
+    margin-left: 0;
+    grid-template-columns: 1fr; /* 1 coluna no mobile */
+  }
+}

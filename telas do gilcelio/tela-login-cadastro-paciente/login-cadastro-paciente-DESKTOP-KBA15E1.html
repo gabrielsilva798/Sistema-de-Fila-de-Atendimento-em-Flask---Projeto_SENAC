@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login-cadastro-paciente.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Login | Moovida</title>
+</head>
+
+
+<body>
+    <header>
+      <h1><a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo-icone.svg') }}" alt="Logo do nome Movida" class="img-logo-icon">MOVIDA</a></h1>
+      <h2 class="animate__heartBeat"> LOGIN - PACIENTE</h2>
+      <div class="side-buttons">
+        <a href="{{ url_for('login_cadastro_paciente') }}" class="btn-box fx-liquid">Paciente</a>
+        <a href="{{ url_for('login_estabelecimento') }}" class="btn-box fx-liquid">Estabelecimento</a>
+      </div>
+    </header>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form action="/submit-form" method="POST">
+                <h1>Criar Conta</h1>
+                <div class="social-icons">
+                    <a href="https://www.google.com/" target="_blank" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.github.com/" target="_blank" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/" target="_blank" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>ou use seu e-mail para se registrar</span>
+
+                <input type="text" name="nome_form" placeholder="*Nome Completo" required
+                    pattern="[A-Za-zÀ-ú\s]{5,}"
+                    title="O nome deve ter pelo menos 5 letras e não pode conter números ou símbolos especiais.">
+
+                <input type="email" name="email_form" placeholder="*E-mail" required
+                    title="Por favor, insira um endereço de e-mail válido (ex: seu.nome@exemplo.com).">
+
+                <input type="text" name="nascimento_form" placeholder="*(Nascimento) dd/mm/aaaa" required
+                    pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+                    title="Formato de data inválido. Use dd/mm/aaaa (ex: 31/12/2000).">
+
+                <input type="text" name="cpf_form" placeholder="*(CPF) 000.000.000-00" required minlength="14" maxlength="14"
+                    pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$" title="O CPF deve estar no formato: 000.000.000-00.">
+
+                <input type="text" name="rg_form" placeholder="*RG/Documento" required pattern="[A-Za-z0-9-]{5,15}"
+                    title="Insira o número do documento, pode conter letras e números (5 a 15 caracteres).">
+
+                <input type="password" name="senha
+                _form" placeholder="*Senha" required minlength="8"
+                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                    title="A senha deve ter no mínimo 8 caracteres e incluir letras e números.">
+
+                <input type="password" name="confi_senha_form" placeholder="*Confirmar Senha" required minlength="8"
+                    title="Confirme sua senha. Deve ser igual à senha anterior.">
+
+                <button type="submit">Cadastrar</button>
+            </form>
+
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Entrar</h1>
+                <div class="social-icons">
+                    <a href="https://www.google.com/" target="_blank" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.github.com/" target="_blank" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/" target="_blank" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>ou use seu e-mail e senha</span>
+                <input type="email" name="email-login" placeholder="E-mail" required>
+                <input type="password" name="senha-login" placeholder="Senha" required>
+                <a href="#">Esqueceu sua senha?</a>
+                <button>Entrar</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bem-vindo de volta!</h1>
+                    <p>Insira seus dados pessoais</p>
+                    <button class="hidden" id="login">entrar</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Olá, Amigo!</h1>
+                    <p>Cadastre-se com seus dados pessoais</p>
+                    <button class="hidden" id="register">registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALTERAR O SRC PARA SUA URL -->
+    <script src="login-cadastro-paciente.js"></script>
+</body>
+
+</html>
