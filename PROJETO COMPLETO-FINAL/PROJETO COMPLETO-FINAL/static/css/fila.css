@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: #f2fdf5;
+    color: #2a3a2a;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ------------------ HEADER ------------------ */
+
+.header {
+    background: #16423c;
+    padding: 15px 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.header-content {
+    width: 95%;
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 55px;  /* AUMENTADO */
+}
+
+.header-brand {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.header-center {
+    text-align: center;
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+
+/* Botão sair */
+.btn-sair {
+    background: #ffffff;
+    color: #16423c;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-sair:hover {
+    background: #e0faf0;
+}
+
+/* ---------- RESTANTE DO CSS (NÃO ALTERADO) ---------- */
+
+.paciente-nome {
+    font-size: 1.2rem;
+    color: #355c41;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.big {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.subinfo {
+    font-size: 0.95rem;
+    color: #557d55;
+}
+
+.tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: white;
+}
+
+.classificacao {
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 1.6rem;
+}
+
+.tag-vermelho { background: #d63031; }
+.tag-amarelo  { background: #f1c40f; color: #2a2a2a; }
+.tag-verde    { background: #27ae60; }
+.tag-azul     { background: #2980b9; }
+.tag-laranja  { background: #e67e22; }
+.tag-roxo     { background: #8e44ad; }
+
+.ultimos ul {
+    list-style: none;
+    padding: 0;
+}
+
+.ultimos li {
+    background: white;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.fila-geral,
+.em-atendimento {
+    margin-top: 40px;
+}
+
+.fila-geral-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.fila-geral-table th {
+    background: #1fa058;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.fila-geral-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e8f5e9;
+}
+
+.fila-geral-table tr:last-child td {
+    border-bottom: none;
+}
+
+.fila-geral-table tr:hover {
+    background: #f1fff4;
+}
+
+footer {
+    text-align: center;
+    color: #557d55;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}

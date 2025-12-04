@@ -1,0 +1,6 @@
+Flask>=2.2
+mysql-connector-python>=8.0
+pandas>=2.0
+matplotlib>=3.6
+google-genai>=0.4.0
+python-dotenv>=1.0
