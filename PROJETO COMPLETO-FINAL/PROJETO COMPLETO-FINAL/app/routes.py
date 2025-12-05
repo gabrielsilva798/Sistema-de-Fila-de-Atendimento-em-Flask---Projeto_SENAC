@@ -1,25 +1,40 @@
-# app/routes.py
-from flask import render_template, request, redirect, url_for, session, flash, jsonify
+from flask import render_template, request, redirect, url_for, session, flash, jsonify, Response
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.db import get_db
 import app.models as models
+import pandas as pd
+import matplotlib.pyplot as plt
+from functools import wraps
+import os
+import io
+import json
+from dotenv import load_dotenv
+from app.utils.gemini_ai import gemini_instrucao_segura
+from app.utils.pandas_ops import executar_operacao
 
-# ---------------------------------------------------------
+# carregar variáveis .env
+load_dotenv()
+
+# configurar chave da API
+#Decorato de login
+def login_required_empresa(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "empresa_id" not in session:
+            flash("Você precisa estar logado para acessar essa página.", "warning")
+            return redirect(url_for("login_estabelecimento"))
+        return f(*args, **kwargs)
+    return wrapper
+
+
 # register_routes(app, socketio)
-# ---------------------------------------------------------
 def register_routes(app, socketio):
-
-    # --------------------
-    # HOME
-    # --------------------
     @app.route('/')
     def index():
         return render_template('index.html')
 
-    # --------------------
     # REGISTRAR EMPRESA
-    # --------------------
     @app.route('/registrar_empresa', methods=['GET', 'POST'])
     def registrar_empresa():
         if request.method == 'GET':
@@ -688,11 +703,123 @@ def register_routes(app, socketio):
         session.clear()
         flash('Conta excluída', 'success')
         return redirect(url_for('index'))
+# ------------------------------------------------GEMINI----------------------------------
+
+    #Rota da página do gemini
+    @app.route("/gemini")
+    @login_required_empresa
+    def gemini():
+        return render_template("gemini.html")
+
+
+
+    #tabela via pandas.
+    @app.route("/gemini/tabela", methods=["POST"])
+    @login_required_empresa
+    def gemini_tabela():
+        prompt = request.form.get("prompt", "")
+        empresa_id = session.get("empresa_id")
+
+        if not prompt:
+            return "<h3>Informe um prompt.</h3>"
+
+        # ====== BANCO ======
+        conn = get_db()
+        cur = conn.cursor(dictionary=True)
+
+        cur.execute("""
+            SELECT 
+                nome,
+                nascimento,
+                classificacao,
+                entrada_inicio
+            FROM pacientes
+            WHERE empresa_id = %s
+            ORDER BY entrada_inicio DESC
+            LIMIT 15
+        """, (empresa_id,))
+
+        rows = cur.fetchall() or []
+
+        cur.close()
+        conn.close()
+
+        df = pd.DataFrame(rows)
+
+        if df.empty:
+            return "<h3>Sem dados disponíveis.</h3>"
+
+        # ====== IA (SIMULAÇÃO VIA FUNÇÃO) ======
+        instrucao = gemini_instrucao_segura(prompt, df.to_json(orient="records"))
+
+        # ====== EXECUTAR OPERAÇÃO ======
+        resultado = executar_operacao(df, instrucao)
+
+        # ====== TABELA HTML ======
+        return resultado.to_html(classes="tabela-gemini", index=False)
+
+
+    # ============================================================
+    # 2) ROTA GRÁFICO 
+    @app.route("/gemini/grafico", methods=["POST"])
+    @login_required_empresa
+    def gemini_grafico():
+        prompt = request.form.get("prompt", "")
+        empresa_id = session.get("empresa_id")
+
+        # ====== BANCO ======
+        conn = get_db()
+        cur = conn.cursor(dictionary=True)
+
+        cur.execute("""
+            SELECT 
+                nome,
+                nascimento,
+                classificacao,
+                entrada_inicio
+            FROM pacientes
+            WHERE empresa_id = %s
+        """, (empresa_id,))
+
+        rows = cur.fetchall() or []
+
+        cur.close()
+        conn.close()
+
+        df = pd.DataFrame(rows)
+
+        if df.empty:
+            return jsonify({"erro": "Sem dados para gráfico."}), 400
+
+        # ===== GEMINI =====
+        instrucao = gemini_instrucao_segura(prompt, df.to_json(orient="records"))
+        resultado = executar_operacao(df, instrucao)
+
+        # ===== GRÁFICO =====
+        fig, ax = plt.subplots()
+
+        if "média de idade" in resultado.columns:
+            ax.bar(["Média"], resultado["média de idade"])
+            ax.set_title("Média de idade")
+
+        elif "total" in resultado.columns:
+            ax.bar(resultado["classificacao"], resultado["total"])
+            ax.set_title("Classificação x Quantidade")
+
+        else:
+            ax.text(0.5, 0.5, "Sem gráfico disponível", ha="center", va="center")
+
+        img = io.BytesIO()
+        fig.savefig(img, format="png")
+        img.seek(0)
+
+        return Response(img.getvalue(), mimetype="image/png")
+
+    
 
     # --------------- SOCKET EVENTS (opcional server-side) ---------------
     # Você pode adicionar handlers socketio aqui, por exemplo:
     # @socketio.on('connect')
     # def on_connect():
     #     print('cliente conectado', request.sid)
-
     # Fim do registro de rotas

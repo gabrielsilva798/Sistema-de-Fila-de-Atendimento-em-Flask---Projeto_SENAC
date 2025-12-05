@@ -2,6 +2,9 @@
 import os
 from flask import Flask
 from flask_socketio import SocketIO
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # cria socketio global (será inicializado com o app em create_app)
 socketio = SocketIO(cors_allowed_origins="*", async_mode="threading")

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Dados | Movida</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gemini.css') }}">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>{{ session['empresa_nome'] }}</h2>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('tela_principal_estabelecimento') }}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="{{ url_for('view_cadastrar_paciente') }}"><i class="fas fa-user-plus"></i> Adicionar Paciente</a></li>
+                <li><a href="{{ url_for('lista_pacientes') }}"><i class="fas fa-users"></i> Lista de Pacientes</a></li>
+                <li><a href="profissionais.html"><i class="fas fa-user-md"></i> Profissionais</a></li>
+                <li class="active">
+                    <a href="{{ url_for('gemini') }}">
+                        <i class="fas fa-brain"></i> Análise de Dados
+                    </a>
+                </li>
+                <li><a href="{{ url_for('config_empresa') }}"><i class="fas fa-cogs"></i> Configurações</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="container">
+
+        <div class="box">
+            <h3>Pergunta ao Gemini</h3>
+            <form id="form">
+                <input type="text" id="prompt" name="prompt" placeholder="Ex: gráfico por classificação" />
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <div class="box" id="tabela"></div>
+
+        <div class="box">
+            <img id="grafico" />
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const fd = new FormData(form);
+            const prompt = fd.get("prompt");
+
+            if (!prompt) {
+                alert("Digite uma pergunta.");
+                return;
+            }
+
+            /** ===========================
+             *  1) TABELA via POST
+             *  ===========================
+             */
+            const tabelaResp = await fetch("/gemini/tabela", {
+                method: "POST",
+                body: fd
+            });
+
+            const tabelaHTML = await tabelaResp.text();
+            document.getElementById("tabela").innerHTML = tabelaHTML;
+
+
+            /** ===========================
+             *  2) GRÁFICO via POST
+             *  Retorna imagem PNG
+             *  ===========================
+             */
+            const graficoResp = await fetch("/gemini/grafico", {
+                method: "POST",
+                body: fd
+            });
+
+            // Blob = arquivo binário (imagem)
+            const blob = await graficoResp.blob();
+            const url = URL.createObjectURL(blob);
+
+            document.getElementById("grafico").src = url;
+        });
+    </script>
+
+</body>
+
+</html>

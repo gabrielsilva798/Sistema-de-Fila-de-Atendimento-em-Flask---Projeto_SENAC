@@ -1,0 +1,117 @@
+        :root {
+            --verde-escuro: #16423c;
+            --verde-claro: #3a7d6b;
+            --white: #ffffff;
+            --cinza-claro: #f3f3f3;
+            --cinza: #999;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background: var(--cinza-claro);
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* === SIDEBAR (já fornecida) === */
+        .sidebar {
+            width: 250px;
+            background-color: var(--verde-escuro);
+            color: var(--white);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--white);
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar nav ul li a {
+            display: block;
+            padding: 12px 10px;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            border-radius: 6px;
+        }
+
+        .sidebar nav ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li.active a {
+            background-color: var(--verde-claro);
+        }
+
+        /* === CONTEÚDO PRINCIPAL === */
+        .container {
+        margin-left: 250px;
+        padding: 25px;
+        width: calc(100% - 250px);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+        .box {
+            background: #fff;
+            padding: 20px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        .box h3 {
+            margin: 0 0 15px 0;
+            font-size: 20px;
+        }
+
+        .box form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .box input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--cinza);
+            font-size: 16px;
+        }
+
+        .box button {
+            padding: 10px 20px;
+            background: var(--verde-escuro);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .box button:hover {
+            background: var(--verde-claro);
+        }
+
+        #grafico {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
