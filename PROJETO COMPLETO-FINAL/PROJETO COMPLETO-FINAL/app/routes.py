@@ -712,7 +712,6 @@ def register_routes(app, socketio):
         return render_template("gemini.html")
 
 
-
     #tabela via pandas.
     @app.route("/gemini/tabela", methods=["POST"])
     @login_required_empresa
@@ -764,58 +763,36 @@ def register_routes(app, socketio):
     @app.route("/gemini/grafico", methods=["POST"])
     @login_required_empresa
     def gemini_grafico():
-        prompt = request.form.get("prompt", "")
-        empresa_id = session.get("empresa_id")
+        try:
+            empresa_id = request.form.get("empresa_id")
+            prompt = request.form.get("prompt")
 
-        # ====== BANCO ======
-        conn = get_db()
-        cur = conn.cursor(dictionary=True)
+            # --- exemplo simples de dataframe ---
+            data = {
+                "classificacao": ["A", "A", "B", "B", "C"],
+                "idade": [30, 25, 40, 50, 22]
+            }
+            df = pd.DataFrame(data)
 
-        cur.execute("""
-            SELECT 
-                nome,
-                nascimento,
-                classificacao,
-                entrada_inicio
-            FROM pacientes
-            WHERE empresa_id = %s
-        """, (empresa_id,))
+            # --- gera o gráfico ---
+            fig, ax = plt.subplots()
+            df["idade"].plot(kind="bar", ax=ax)
+            ax.set_title("Exemplo de gráfico")
+            ax.set_xlabel("Índice")
+            ax.set_ylabel("Idade")
 
-        rows = cur.fetchall() or []
+            # --- salvando em buffer ---
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            plt.close(fig)
 
-        cur.close()
-        conn.close()
+            return Response(img.getvalue(), mimetype="image/png")
 
-        df = pd.DataFrame(rows)
+        except Exception as e:
+            return {"erro": str(e)}, 500
 
-        if df.empty:
-            return jsonify({"erro": "Sem dados para gráfico."}), 400
-
-        # ===== GEMINI =====
-        instrucao = gemini_instrucao_segura(prompt, df.to_json(orient="records"))
-        resultado = executar_operacao(df, instrucao)
-
-        # ===== GRÁFICO =====
-        fig, ax = plt.subplots()
-
-        if "média de idade" in resultado.columns:
-            ax.bar(["Média"], resultado["média de idade"])
-            ax.set_title("Média de idade")
-
-        elif "total" in resultado.columns:
-            ax.bar(resultado["classificacao"], resultado["total"])
-            ax.set_title("Classificação x Quantidade")
-
-        else:
-            ax.text(0.5, 0.5, "Sem gráfico disponível", ha="center", va="center")
-
-        img = io.BytesIO()
-        fig.savefig(img, format="png")
-        img.seek(0)
-
-        return Response(img.getvalue(), mimetype="image/png")
-
-    
+        
 
     # --------------- SOCKET EVENTS (opcional server-side) ---------------
     # Você pode adicionar handlers socketio aqui, por exemplo:
