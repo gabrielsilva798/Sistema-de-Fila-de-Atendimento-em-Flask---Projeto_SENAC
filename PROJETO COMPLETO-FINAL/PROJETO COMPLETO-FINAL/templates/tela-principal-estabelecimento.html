@@ -84,17 +84,55 @@
         </table>
       </section>
 
+      <!-- PARTE PRONTA FEITA PELA VALERYA -->
+      <section class="metrics">
+        <div class="metric-card queue">
+          <i class="fas fa-clock"></i>
+          <h3>Na Fila</h3>
+          <p class="count" id="count-fila">0</p>
+          <span>Pacientes aguardando</span>
+        </div>
+        <div class="metric-card serving">
+          <i class="fas fa-user-nurse"></i>
+          <h3>Em Atendimento</h3>
+          <p class="count" id="count-atendimento">0</p>
+          <span>Pacientes sendo atendidos</span>
+        </div>
+        <div class="metric-card finished">
+          <i class="fas fa-check-circle"></i>
+          <h3>Finalizados (Hoje)</h3>
+          <p class="count" id="count-finalizado">0</p>
+          <span>Atendimentos concluídos</span>
+        </div>
+      </section>
+
+
     </main>
   </div>
 
   <!-- SOCKET.IO -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    function carregarMetricas() {
+      fetch("/api/metricas")
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("count-fila").innerText = data.fila;
+          document.getElementById("count-atendimento").innerText = data.atendimento;
+          document.getElementById("count-finalizado").innerText = data.finalizados;
+        });
+    }
+
+    // inicia a conexão socket
     const socket = io();
 
+    // Atualiza métricas sempre que houver mudança na fila
     socket.on("update_fila", () => {
-      location.reload();
+      carregarMetricas();
     });
+
+    // primeira carga
+    carregarMetricas();
   </script>
 
 </body>

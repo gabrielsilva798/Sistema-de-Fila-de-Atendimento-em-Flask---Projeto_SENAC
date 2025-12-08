@@ -565,6 +565,7 @@ def register_routes(app, socketio):
         flash('Paciente inserido na fila', 'success')
         return redirect(url_for('view_cadastrar_paciente'))
 
+#---------------------------------------------------------------------------------------------------------
     # --------------------
     # LISTA DE PACIENTES NA FILA
     # --------------------
@@ -703,6 +704,58 @@ def register_routes(app, socketio):
         session.clear()
         flash('Conta excluída', 'success')
         return redirect(url_for('index'))
+    
+    #
+    # ROTA DE QUANTIDADES DE PACIENTES NA FILA, EM ATENDIMENTO E FINALIZADOS NO DIA DE HOJE
+    @app.route('/api/metricas')
+    def api_metricas():
+        empresa_id = session.get('empresa_id')
+        if not empresa_id:
+            return jsonify({
+                "fila": 0,
+                "atendimento": 0,
+                "finalizados": 0
+            })
+
+        conn = get_db()
+        cur = conn.cursor(dictionary=True)
+
+        # 1️⃣ Quantos na fila (não chamados)
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM fila
+            WHERE empresa_id=%s AND chamado=FALSE
+        """, (empresa_id,))
+        fila = cur.fetchone()["total"]
+
+        # 2️⃣ Quantos em atendimento
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM em_atendimento
+            WHERE empresa_id=%s AND fim_atendimento IS NULL
+        """, (empresa_id,))
+        atendimento = cur.fetchone()["total"]
+
+        # 3️⃣ Quantos finalizados HOJE
+        cur.execute("""
+            SELECT COUNT(*) AS total
+            FROM em_atendimento
+            WHERE empresa_id=%s 
+            AND fim_atendimento IS NOT NULL
+            AND DATE(fim_atendimento) = CURDATE()
+        """, (empresa_id,))
+        finalizados = cur.fetchone()["total"]
+
+        cur.close()
+        conn.close()
+
+        return jsonify({
+            "fila": fila,
+            "atendimento": atendimento,
+            "finalizados": finalizados
+        })
+
+
 # ------------------------------------------------GEMINI----------------------------------
 
     #Rota da página do gemini

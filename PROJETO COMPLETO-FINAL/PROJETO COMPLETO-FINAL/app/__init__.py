@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+API_KEY = os.getenv("API_KEY_MEUPROJETO")
+
 # cria socketio global (será inicializado com o app em create_app)
 socketio = SocketIO(cors_allowed_origins="*", async_mode="threading")
 
