@@ -80,5 +80,22 @@ CREATE TABLE IF NOT EXISTS em_atendimento (
     FOREIGN KEY (empresa_id) REFERENCES tb_empresa(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
 CREATE INDEX IF NOT EXISTS idx_pacientes_empresa_cpf ON pacientes(empresa_id, cpf);
 CREATE INDEX IF NOT EXISTS idx_fila_empresa_chegada ON fila(empresa_id, chegada);
+
+CREATE TABLE profissionais (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome_completo VARCHAR(150) NOT NULL,
+    data_nascimento DATE,
+    telefone VARCHAR(15),
+    email_profissional VARCHAR(100) UNIQUE NOT NULL,
+    especialidade VARCHAR(50) NOT NULL, 
+    registro_crm_coren VARCHAR(20) UNIQUE NOT NULL,
+    estado_crm VARCHAR(2) NOT NULL, 
+    turno_atendimento VARCHAR(10) NOT NULL,
+    status_clinica VARCHAR(15) NOT NULL,
+    informacoes_adicionais TEXT,
+    PRIMARY KEY (id)
+);
