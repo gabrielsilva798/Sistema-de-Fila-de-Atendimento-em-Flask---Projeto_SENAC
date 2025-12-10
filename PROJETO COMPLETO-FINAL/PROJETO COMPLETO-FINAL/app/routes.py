@@ -516,13 +516,34 @@ def register_routes(app, socketio):
         )
 
     # --------------------
-    # CADASTRAR PACIENTE (ESTABELECIMENTO)
+    # CADASTRAR PACIENTE (NO ESTABELECIMENTO)
     # --------------------
     @app.route('/cadastrar-paciente', methods=['GET'])
     def view_cadastrar_paciente():
         if 'empresa_id' not in session:
             return redirect(url_for('login_estabelecimento'))
-        return render_template('cadastrar-paciente.html', clinic_name=session.get('empresa_nome'))
+
+        empresa_id = session['empresa_id']
+
+        # BUSCAR PROFISSIONAIS DA EMPRESA
+        conn = get_db()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("""
+            SELECT id, nome_completo
+            FROM profissionais
+            WHERE id_empresa = %s
+            ORDER BY nome_completo ASC
+        """, (empresa_id,))
+        profissionais = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return render_template(
+            'cadastrar-paciente.html',
+            clinic_name=session.get('empresa_nome'),
+            profissionais=profissionais
+        )
 
     @app.route('/cadastrar-paciente', methods=['GET'], endpoint='cadastrar_paciente')
     def cadastrar_paciente_alias():
@@ -544,8 +565,15 @@ def register_routes(app, socketio):
             'telefone': request.form.get('telefone'),
             'sintomas': request.form.get('sintomas'),
             'classificacao': request.form.get('classificacao'),
-            'responsavel': request.form.get('responsavel') or session.get('empresa_nome')
+            'responsavel': request.form.get('responsavel')  # <-- ID do profissional
         }
+
+        # Garantir que está vindo como INT
+        if not data['responsavel'] or not data['responsavel'].isdigit():
+            flash('Responsável inválido.', 'danger')
+            return redirect(url_for('view_cadastrar_paciente'))
+
+        data['responsavel'] = int(data['responsavel'])
 
         try:
             res = models.inserir_paciente_empresa(data, empresa_id)
@@ -554,19 +582,21 @@ def register_routes(app, socketio):
             flash('Erro ao inserir paciente (ver logs).', 'danger')
             return redirect(url_for('view_cadastrar_paciente'))
 
+        # Emitir atualizações do SocketIO
         try:
             socketio.emit('update_fila', {'empresa_id': empresa_id}, broadcast=True)
-            try:
-                socketio.emit('atualizar_fila_paciente', {'paciente_id': res.get('paciente_id'), 'posicao': None}, broadcast=True)
-            except Exception:
-                pass
+            socketio.emit('atualizar_fila_paciente', {
+                'paciente_id': res.get('paciente_id'),
+                'posicao': None
+            }, broadcast=True)
         except Exception:
             pass
 
-        flash('Paciente inserido na fila', 'success')
+        flash('Paciente inserido na fila com sucesso!', 'success')
         return redirect(url_for('view_cadastrar_paciente'))
 
-#---------------------------------------------------------------------------------------------------------
+
+#------------------------------------------------------ BOTÃO DO GILCELIO ---------------------------------------------------
     # --------------------
     # LISTA DE PACIENTES NA FILA
     # --------------------
@@ -705,57 +735,6 @@ def register_routes(app, socketio):
         session.clear()
         flash('Conta excluída', 'success')
         return redirect(url_for('index'))
-    
-    #
-    # ROTA DE QUANTIDADES DE PACIENTES NA FILA, EM ATENDIMENTO E FINALIZADOS NO DIA DE HOJE
-    @app.route('/api/metricas')
-    def api_metricas():
-        empresa_id = session.get('empresa_id')
-        if not empresa_id:
-            return jsonify({
-                "fila": 0,
-                "atendimento": 0,
-                "finalizados": 0
-            })
-
-        conn = get_db()
-        cur = conn.cursor(dictionary=True)
-
-        # 1️⃣ Quantos na fila (não chamados)
-        cur.execute("""
-            SELECT COUNT(*) AS total
-            FROM fila
-            WHERE empresa_id=%s AND chamado=FALSE
-        """, (empresa_id,))
-        fila = cur.fetchone()["total"]
-
-        # 2️⃣ Quantos em atendimento
-        cur.execute("""
-            SELECT COUNT(*) AS total
-            FROM em_atendimento
-            WHERE empresa_id=%s AND fim_atendimento IS NULL
-        """, (empresa_id,))
-        atendimento = cur.fetchone()["total"]
-
-        # 3️⃣ Quantos finalizados HOJE
-        cur.execute("""
-            SELECT COUNT(*) AS total
-            FROM em_atendimento
-            WHERE empresa_id=%s 
-            AND fim_atendimento IS NOT NULL
-            AND DATE(fim_atendimento) = CURDATE()
-        """, (empresa_id,))
-        finalizados = cur.fetchone()["total"]
-
-        cur.close()
-        conn.close()
-
-        return jsonify({
-            "fila": fila,
-            "atendimento": atendimento,
-            "finalizados": finalizados
-        })
-
 
 # ------------------------------------------------GEMINI----------------------------------
 
@@ -802,7 +781,19 @@ def register_routes(app, socketio):
         if df.empty:
             return "<h3>Sem dados disponíveis.</h3>"
 
-        # ====== IA (SIMULAÇÃO VIA FUNÇÃO) ======
+        # ================================
+        #   🔥 CORREÇÃO DO ERRO AQUI 🔥
+        #   Trata colunas de data/hora
+        # ================================
+        for col in df.columns:
+            if any(x in col.lower() for x in ["data", "hora", "nascimento", "entrada"]):
+                df[col] = pd.to_datetime(df[col], errors="coerce")
+
+        # Converte datetimes para string (evita Overflow no JSON)
+        for col in df.select_dtypes(include=["datetime64[ns]"]).columns:
+            df[col] = df[col].astype(str)
+
+        # ====== IA ======
         instrucao = gemini_instrucao_segura(prompt, df.to_json(orient="records"))
 
         # ====== EXECUTAR OPERAÇÃO ======
@@ -812,12 +803,20 @@ def register_routes(app, socketio):
         return resultado.to_html(classes="tabela-gemini", index=False)
 
 
+
     # ============================================================
     # 2) ROTA GRÁFICO 
     @app.route("/gemini/grafico", methods=["POST"])
     @login_required_empresa
     def gemini_grafico():
         try:
+            # 🔥 IMPORTANTE: força backend sem GUI (Evita Tkinter)
+            import matplotlib
+            matplotlib.use("Agg")
+
+            import matplotlib.pyplot as plt
+            import io
+            
             empresa_id = request.form.get("empresa_id")
             prompt = request.form.get("prompt")
 
@@ -837,7 +836,7 @@ def register_routes(app, socketio):
 
             # --- salvando em buffer ---
             img = io.BytesIO()
-            plt.savefig(img, format='png')
+            fig.savefig(img, format='png')
             img.seek(0)
             plt.close(fig)
 
@@ -846,7 +845,6 @@ def register_routes(app, socketio):
         except Exception as e:
             return {"erro": str(e)}, 500
 
-        
 
     # --------------- SOCKET EVENTS (opcional server-side) ---------------
     # Você pode adicionar handlers socketio aqui, por exemplo:
@@ -928,6 +926,8 @@ def register_routes(app, socketio):
     @login_required_empresa
     def cadastrar_profissional():
         if request.method == 'POST':
+            empresa_id = session.get('empresa_id')
+
             dados = request.form
             nome = dados['nome_completo']
             data_nasc = dados['data_nascimento']
@@ -939,18 +939,12 @@ def register_routes(app, socketio):
             turno = dados['turno_atendimento']
             status = dados['status_clinica']
             info_adicional = dados.get('informacoes_adicionais', '')
-            
-            sql = """
-                INSERT INTO profissionais (nome_completo, data_nascimento, telefone, email_profissional, 
-                                        especialidade, registro_crm_coren, estado_crm, 
-                                        turno_atendimento, status_clinica, informacoes_adicionais)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            params = (nome, data_nasc, telefone, email, especialidade, 
-                    registro, estado_crm, turno, status, info_adicional)
-            
-            resultado = execute_query(sql, params, fetch_type='insert')
-            
+
+            resultado = models.cadastrar_profissional_model(
+                empresa_id, nome, data_nasc, telefone, email,
+                especialidade, registro, estado_crm, turno, status, info_adicional
+            )
+
             if resultado is not False:
                 flash(f'Profissional {nome} cadastrado com sucesso!', 'success')
                 return redirect(url_for('profissionais'))
@@ -959,6 +953,7 @@ def register_routes(app, socketio):
                 return redirect(url_for('cadastrar_profissional'))
 
         return render_template('cadastrar-prof.html')
+
 
 
     # C. Rotas de Edição (Update)
@@ -1024,3 +1019,4 @@ def register_routes(app, socketio):
                 flash('Erro ao excluir profissional.', 'danger')
                 
         return redirect(url_for('profissionais'))
+    

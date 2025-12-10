@@ -87,6 +87,7 @@ CREATE INDEX IF NOT EXISTS idx_fila_empresa_chegada ON fila(empresa_id, chegada)
 
 CREATE TABLE profissionais (
     id INT NOT NULL AUTO_INCREMENT,
+    id_empresa INT NOT NULL,
     nome_completo VARCHAR(150) NOT NULL,
     data_nascimento DATE,
     telefone VARCHAR(15),
@@ -97,5 +98,6 @@ CREATE TABLE profissionais (
     turno_atendimento VARCHAR(10) NOT NULL,
     status_clinica VARCHAR(15) NOT NULL,
     informacoes_adicionais TEXT,
+    FOREIGN KEY (id_empresa) REFERENCES tb_empresa(id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );

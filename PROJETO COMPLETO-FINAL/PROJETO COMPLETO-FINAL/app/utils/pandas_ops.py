@@ -5,10 +5,22 @@ from datetime import datetime
 def calcular_idade(data_nascimento):
     if pd.isnull(data_nascimento):
         return None
+
+    # 🔥 Garante que é datetime
+    if not isinstance(data_nascimento, pd.Timestamp):
+        try:
+            data_nascimento = pd.to_datetime(data_nascimento, errors="coerce")
+        except:
+            return None
+
+    if pd.isnull(data_nascimento):
+        return None
+
     hoje = datetime.today()
     return hoje.year - data_nascimento.year - (
         (hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day)
     )
+
 
 def executar_operacao(df: pd.DataFrame, instrucao: dict) -> pd.DataFrame:
     operacao = instrucao.get("operacao")

@@ -19,8 +19,9 @@
             <ul>
                 <li><a href="{{ url_for('tela_principal_estabelecimento') }}"><i
                             class="fas fa-chart-line"></i>Dashboard</a></li>
-                <li  class="active"><a href="{{ url_for('view_cadastrar_paciente') }}"><i class="fas fa-user-plus"></i> Adicionar
-                    Paciente</a>
+                <li class="active"><a href="{{ url_for('view_cadastrar_paciente') }}"><i class="fas fa-user-plus"></i>
+                        Adicionar
+                        Paciente</a>
                 </li>
                 <li><a href="{{ url_for('lista_pacientes') }}"><i class="fas fa-users"></i> Lista de Pacientes</a>
                 </li>
@@ -94,8 +95,16 @@
 
                 <div class="form-group">
                     <label for="responsavel">Responsável</label>
-                    <input type="text" id="responsavel" name="responsavel" required>
+                    <select id="responsavel" name="responsavel" required>
+                        <option value="">Selecione um profissional</option>
+
+                        {% for p in profissionais %}
+                        <option value="{{ p.id }}">{{ p.nome_completo }}</option>
+                        {% endfor %}
+
+                    </select>
                 </div>
+
 
                 <button class="btn" type="submit">Cadastrar Paciente</button>
 

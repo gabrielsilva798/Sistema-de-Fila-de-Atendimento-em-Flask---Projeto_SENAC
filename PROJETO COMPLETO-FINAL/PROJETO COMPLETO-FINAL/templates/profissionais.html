@@ -143,13 +143,10 @@
                             <a href="{{ url_for('editar_profissional', id=profissional.id) }}"
                                 class="btn-action edit"><i class="fas fa-edit"></i> Editar</a>
 
-                            <form method="POST" action="{{ url_for('excluir_profissional') }}" style="display:inline;">
-                                <input type="hidden" name="id" value="{{ profissional.id }}">
-                                <button type="submit" class="btn-action delete"
-                                    onclick="return confirm('Tem certeza que deseja excluir {{ profissional.nome_completo }}?');">
-                                    <i class="fas fa-trash-alt"></i> Excluir
-                                </button>
-                            </form>
+                            <button type="button" class="btn-action delete"
+                                onclick="abrirModalExclusao('{{ profissional.id }}', '{{ profissional.nome_completo }}')">
+                                <i class="fas fa-trash-alt"></i> Excluir
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,6 +159,52 @@
         </div>
 
     </div>
+
+    <div id="confirmacaoModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header-custom">
+                <h3>Confirmação de Exclusão</h3>
+                <span class="close-btn" onclick="fecharModal()">&times;</span>
+            </div>
+
+            <div class="modal-body-custom">
+                <p>Você tem certeza que deseja excluir o profissional **<span id="nomeProfissional"></span>**?</p>
+                <p style="color: var(--vermelho); font-weight: bold;">Essa ação não pode ser desfeita.</p>
+            </div>
+
+            <div class="modal-footer-custom">
+                <button type="button" class="btn-modal-action-custom btn-modal-action-custom-primary"
+                    onclick="fecharModal()">Cancelar</button>
+
+                <form id="formExclusao" method="POST" action="{{ url_for('excluir_profissional') }}"
+                    style="display:inline;">
+                    <input type="hidden" name="id" id="idProfissional">
+                    <button type="submit" class="btn-modal-action-custom btn-action delete">Sim, Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById('confirmacaoModal');
+        // Função para abrir o modal e preencher os dados
+        function abrirModalExclusao(id, nome) {
+            document.getElementById('idProfissional').value = id;
+            document.getElementById('nomeProfissional').textContent = nome;
+            modal.style.display = 'flex';
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            modal.style.display = 'none';
+        }
+        // Fecha o modal ao clicar fora dele
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                fecharModal();
+            }
+        }
+    </script>
 
 </body>
 
