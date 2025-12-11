@@ -12,7 +12,7 @@
 <body>
 
     <aside class="sidebar">
-        <h2>Clínica Med</h2>
+        <h2>{{ session['empresa_nome'] }}</h2>
         <nav>
             <ul>
                 <li><a href="{{ url_for('tela_principal_estabelecimento') }}"><i class="fas fa-chart-line"></i>
