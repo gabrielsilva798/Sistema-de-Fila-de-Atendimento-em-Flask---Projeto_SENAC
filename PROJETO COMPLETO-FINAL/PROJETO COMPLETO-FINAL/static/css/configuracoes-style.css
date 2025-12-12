@@ -1,11 +1,13 @@
-/* PALETA (Reutilizando cores consistentes) */
 :root {
     --verde-escuro: #123C35;
     --verde-claro: #2F6658;
     --cinza-gelo: #DFECE7;
     --cinza-claro: #F1F5F1;
     --white: #ffffff;
+    --vermelho-alerta: #c0392b; 
+    --vermelho-dark: #962d20; 
     --text-dark: var(--verde-escuro);
+    /* As cores de log não são mais necessárias, mas se houveram outras, foram removidas */
 }
 
 * {
@@ -15,10 +17,11 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background: var(--cinza-claro);
     display: flex;
     min-height: 100vh;
+    color: #333; 
 }
 
 /* --- ESTILIZAÇÃO DA SIDEBAR DE NAVEGAÇÃO --- */
@@ -27,7 +30,10 @@ body {
     background-color: var(--verde-escuro);
     color: var(--white);
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15); 
+    position: sticky; 
+    top: 0;
+    height: 100vh;
 }
 
 .sidebar h2 {
@@ -66,25 +72,58 @@ body {
 /* --- CONTEÚDO PRINCIPAL (LAYOUT) --- */
 .main-content {
     flex-grow: 1;
-    padding: 30px;
+    padding: 40px; 
 }
 
 .content-header {
-    margin-bottom: 30px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 15px;
+    margin-bottom: 35px;
+    border-bottom: 2px solid var(--cinza-gelo); 
+    padding-bottom: 20px;
 }
 
 .content-header h1 {
     color: var(--verde-escuro);
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 2rem;
 }
 
-/* --- ESTILOS ESPECÍFICOS DE CONFIGURAÇÕES --- */
+.content-header p {
+    color: #666;
+    margin-top: 5px;
+    font-size: 1.1rem;
+}
+
+/* --- FLASH MESSAGES --- */
+.flash-container {
+    margin-bottom: 20px;
+}
+
+.flash {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    border-left: 5px solid;
+}
+
+.flash.success {
+    background-color: #e6ffe6;
+    color: var(--verde-escuro);
+    border-color: var(--verde-claro);
+}
+
+.flash.error {
+    background-color: #ffe6e6;
+    color: var(--vermelho-alerta);
+    border-color: var(--vermelho-alerta);
+}
+
+/* --- ESTILOS ESPECÍFICOS DE CONFIGURAÇÕES (GRID E CARDS) --- */
 
 .settings-grid {
+    /* Ajuste para grids com 3 itens */
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
     gap: 30px;
 }
 
@@ -92,237 +131,338 @@ body {
     background: var(--white);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08); 
+    border-top: 5px solid var(--verde-claro); 
 }
 
 .settings-card h2 {
     color: var(--verde-escuro);
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--cinza-claro);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--cinza-gelo);
     padding-bottom: 10px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+}
+
+.settings-card h2 i {
+    margin-right: 10px;
+    color: var(--verde-claro);
 }
 
 .setting-item {
-    margin-bottom: 20px;
+    margin-bottom: 25px; 
 }
 
 .setting-item label {
     display: block;
     color: var(--text-dark);
-    font-weight: bold;
+    font-weight: 600; 
     margin-bottom: 8px;
-    font-size: 0.95rem;
-}
-
-.settings-card input[type="text"],
-.settings-card select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
     font-size: 1rem;
 }
 
-/* Botão de salvar */
+/* Remove a cor verde do ícone do label para deixar o ícone do h2 em destaque */
+.setting-item label i {
+    margin-right: 5px;
+    color: inherit; 
+}
+
+.settings-card input[type="text"],
+.settings-card input[type="email"], 
+.settings-card select {
+    width: 100%;
+    padding: 12px; 
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.settings-card input:focus,
+.settings-card select:focus {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 0 2px var(--cinza-gelo);
+}
+
+/* Estilo para pequenas descrições */
+.setting-item small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* -------------------------------
+   BOTÕES SALVAR (Geral/Card)
+--------------------------------*/
+
 .btn-save {
     background-color: var(--verde-claro);
     color: var(--white);
     border: none;
     padding: 12px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.1s;
     margin-top: 10px;
+    font-weight: 600;
 }
 
 .btn-save:hover {
     background-color: var(--verde-escuro);
+    transform: translateY(-1px);
 }
 
 .btn-save i {
     margin-right: 5px;
 }
 
-/* Estilo para Switch Toggle */
+/* -------------------------------
+   ESTILO PARA SWITCH TOGGLE
+--------------------------------*/
 .switch-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 28px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-}
-
-input:checked+.slider {
-    background-color: var(--verde-claro);
-}
-
-input:checked+.slider:before {
-    transform: translateX(22px);
-}
-
-.slider.round {
-    border-radius: 28px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-@media (max-width: 768px) {
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
-}
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; }
+input:checked+.slider { background-color: var(--verde-claro); }
+input:checked+.slider:before { transform: translateX(22px); }
+.slider.round { border-radius: 28px; }
+.slider.round:before { border-radius: 50%; }
 
 /* -------------------------------
-   FORMULÁRIO DE CONFIGURAÇÃO
+   BOTÃO SALVAR (Principal - .btn-salvar)
 --------------------------------*/
 
-/* Caixa principal do formulário */
-.form-box {
-  background: var(--white);
-  padding: 30px 40px;
-  width: 100%;
-  max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0px 0px 12px #b8c8c3;
-  margin-bottom: 40px;
-}
-
-.form-box h2 {
-  color: var(--verde-escuro);
-  font-weight: bold;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--cinza-gelo);
-  padding-bottom: 10px;
-}
-
-/* Campos de entrada */
-.form-box label {
-  color: var(--text-dark);
-  font-weight: bold;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.form-box input[type="text"],
-.form-box input[type="file"],
-.form-box select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #9bb3ac;
-  font-size: 16px;
-  outline: none;
-  margin-bottom: 18px;
-}
-
-.form-box input:focus,
-.form-box select:focus {
-  border-color: var(--verde-claro);
-}
-
-/* Botão salvar */
 .btn-salvar {
-  background: var(--verde-claro);
-  color: var(--white);
-  padding: 14px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-  width: 100%;
-  transition: 0.3s;
-  font-weight: bold;
-}
-
-button i {
-  margin-right: 8px;
+    background: var(--verde-claro);
+    color: var(--white);
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+    font-weight: bold;
+    margin-top: 20px;
 }
 
 .btn-salvar:hover {
-  background: var(--verde-escuro);
+    background: var(--verde-escuro);
+}
+
+.btn-salvar i {
+    margin-right: 8px;
 }
 
 /* ----------------------------------
-   SEÇÃO EXCLUIR CONTA
+    SEÇÃO EXCLUIR EMPRESA
 -----------------------------------*/
 
 .divider {
-  border: none;
-  height: 2px;
-  background: var(--cinza-gelo);
-  margin: 40px 0;
+    border: none;
+    height: 2px;
+    background: var(--cinza-gelo);
+    margin: 50px 0; 
 }
 
 .delete-box {
-  background: var(--white);
-  padding: 30px 40px;
-  max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0px 0px 12px #b8c8c3;
+    background: #fffafa; 
+    padding: 30px;
+    max-width: 800px; 
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0b0a8; 
+    margin-top: 30px;
 }
 
 .delete-box h2 {
-  color: var(--vermelho);
-  font-weight: bold;
-  margin-bottom: 15px;
+    color: var(--vermelho-alerta);
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
 }
 
 .delete-box p {
-  color: var(--text-dark);
-  font-size: 16px;
-  margin-bottom: 25px;
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.5;
 }
 
-/* Botão excluir */
+.delete-box p strong {
+    color: var(--vermelho-alerta);
+}
+
+/* Botão excluir (que abre o modal) */
 .btn-delete {
-  background: #c0392b;
-  color: #fff;
-  padding: 14px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-  transition: 0.3s;
+    background: var(--vermelho-alerta);
+    color: #fff;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-delete:hover {
-  background: #962d20;
+    background: var(--vermelho-dark); 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ----------------------------------
+    ESTILOS DO MODAL
+-----------------------------------*/
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 550px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--cinza-gelo);
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    color: var(--vermelho-alerta);
+    font-size: 1.6rem;
+}
+
+.modal-header i {
+    font-size: 2rem;
+    color: var(--vermelho-alerta);
+    margin-right: 15px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    transition: color 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--vermelho-dark);
+    text-decoration: none;
+}
+
+.modal-content p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.modal-content .warning-text {
+    color: var(--vermelho-alerta);
+    background-color: #fcebeb;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid var(--vermelho-alerta);
+    font-weight: 600;
+}
+
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--vermelho-alerta);
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+/* Botão de confirmação dentro do modal */
+.btn-delete-confirm {
+    background: var(--vermelho-alerta);
+    color: var(--white);
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: not-allowed; 
+    width: 100%;
+    font-weight: bold;
+    transition: 0.3s;
+    opacity: 0.5;
+}
+
+.btn-delete-confirm.active {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.btn-delete-confirm.active:hover {
+    background: var(--vermelho-dark);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- MEDIA QUERIES (Responsividade) --- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr; 
+    }
+
+    .delete-box {
+        max-width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
 }
