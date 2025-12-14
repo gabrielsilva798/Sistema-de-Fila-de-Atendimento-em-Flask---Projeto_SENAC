@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Profissional - Clínica Med</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profissionais-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>Clínica Med</h2>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('tela_principal_estabelecimento') }}"><i class="fas fa-chart-line"></i>
+                        Dashboard</a></li>
+                <li><a href="{{ url_for('view_cadastrar_paciente') }}"><i class="fas fa-user-plus"></i> Adicionar
+                        Paciente</a></li>
+                <li><a href="{{ url_for('lista_pacientes') }}"><i class="fas fa-users"></i> Lista de Pacientes</a></li>
+                <li class="active"><a href="{{ url_for('profissionais') }}"><i class="fas fa-user-md"></i>
+                        Profissionais</a></li>
+                <li>
+                    <a href="{{ url_for('gemini') }}">
+                        <i class="fas fa-brain"></i> Análise de Dados
+                    </a>
+                </li>
+                <li><a href="{{ url_for('config_empresa') }}"><i class="fas fa-cogs"></i> Configurações</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <header class="content-header">
+            <h1><i class="fas fa-user-plus"></i> Cadastro de Novo Profissional</h1>
+        </header>
+
+        <div class="form-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('cadastrar_profissional') }}">
+
+                <h2>Dados Pessoais</h2>
+
+                <div class="form-group">
+                    <label for="nome_completo">Nome Completo</label>
+                    <input type="text" id="nome_completo" name="nome_completo" required minlength="20" maxlength="200"
+                        placeholder="ex: Gessiel Salvatore">
+                </div>
+
+                <div class="form-group">
+                    <label for="data_nascimento">Data de Nascimento</label>
+                    <input type="date" id="data_nascimento" name="data_nascimento"
+                        title="A data de nascimento está incompleta." required>
+                </div>
+
+                <h2>Dados de Contato</h2>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" required placeholder="(xx) xxxxx-xxxx"
+                        pattern="[0-9]{10,11}" title="O telefone deve ter 10 ou 11 dígitos (incluindo DDD)."
+                        maxlength="11" minlength="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="email_profissional">E-mail Profissional</label>
+                    <input type="email" id="email_profissional" name="email_profissional" required maxlength="100"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" placeholder="nome@dominio.com"
+                        title="Por favor, insira um endereço de e-mail válido (ex: nome@dominio.com)">
+                </div>
+
+                <h2>Registro e Especialidade</h2>
+
+                <div class="form-group">
+                    <label for="especialidade">Especialidade</label>
+                    <select id="especialidade" name="especialidade" title="Selecione uma das opções." required>
+                        <option value="" selected hidden disabled>Selecione a Especialidade</option>
+                        <option value="Clínico Geral">Clínico Geral</option>
+                        <option value="Pediatria">Pediatria</option>
+                        <option value="Enfermagem">Enfermagem</option>
+                        <option value="Ortopedia">Ortopedia</option>
+                        <option value="Dermatologia">Dermatologia</option>
+                        <option value="Cardiologia">Cardiologia</option>
+                        <option value="Ginecologia">Ginecologia</option>
+                        <option value="Oftalmologia">Oftalmologia</option>
+                        <option value="Otorrinolaringologia">Otorrinolaringologia</option>
+                        <option value="Psiquiatria">Psiquiatria</option>
+                        <option value="Gastroenterologia">Gastroenterologia</option>
+                        <option value="Neurologia">Neurologia</option>
+                        <option value="Urologia">Urologia</option>
+                        <option value="Fisioterapia">Fisioterapia</option>
+                        <option value="Nutrição">Nutrição</option>
+                        <option value="Endocrinologia">Endocrinologia</option>
+                        <option value="Reumatologia">Reumatologia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="registro_crm_coren">Registro (CRM/COREN)</label>
+                    <input type="text" id="registro_crm_coren" name="registro_crm_coren"
+                        placeholder="Ex: CRM: 12345 ou COREN: 98765 (Limite de 15 caracteres e minimo de 6)"
+                        minlength="6" maxlength="15" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado_crm">Estado do Registro (UF)</label>
+                    <select id="estado_crm" name="estado_crm" title="Selecione uma das opções." required>
+                        <option value="" selected hidden disabled>Selecione </option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AM">AM</option>
+                        <option value="AP">AP</option>
+                        <option value="SP">SP</option>
+                        <option value="RJ">RJ</option>
+                        <option value="DF">DF</option>
+                        <option value="GO">GO</option>
+                    </select>
+                </div>
+
+                <h2>Atendimento e Status</h2>
+
+                <div class="form-group">
+                    <label for="turno_atendimento">Turno de Atendimento</label>
+                    <select id="turno_atendimento" name="turno_atendimento" title="Selecione uma das opções." required>
+                        <option value="" selected hidden disabled>Selecione o Turno</option>
+                        <option value="Manhã">Manhã (08h - 12h)</option>
+                        <option value="Tarde">Tarde (13h - 18h)</option>
+                        <option value="Noite">Noite (18h - 22h)</option>
+                        <option value="Integral">Integral</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="status_clinica">Status na Clínica</label>
+                    <select id="status_clinica" name="status_clinica" title="Selecione uma das opções." required>
+                        <option value="Disponível">Disponível</option>
+                        <option value="Em atendimento">Em Atendimento</option>
+                        <option value="Em pausa">Em Pausa</option>
+                    </select>
+                </div>
+
+                <h2>Informações Adicionais</h2>
+
+                <div class="form-group">
+                    <label for="informacoes_adicionais">Observações</label>
+                    <textarea id="informacoes_adicionais" name="informacoes_adicionais" rows="4" maxlength="500"
+                        placeholder="Adicione informações relevantes sobre o profissional, como horários especiais, convênios ou notas importantes. Limite: 500 caracteres."></textarea>
+                </div>
+
+                <a href="{{ url_for('profissionais') }}" class="btn-submit btn-back"><i class="fas fa-arrow-left"></i>
+                    Voltar para a Lista</a>
+                <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Salvar Profissional</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

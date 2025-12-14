@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Clínica - Gerenciamento</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tela-principal-estabelecimento.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <aside class="sidebar">
+      <h2>{{ session['empresa_nome'] }}</h2>
+      <nav>
+        <ul>
+          <li class="active"><a href="{{ url_for('tela_principal_estabelecimento') }}"><i class="fas fa-chart-line"></i>
+              Dashboard</a></li>
+          <li><a href="{{ url_for('view_cadastrar_paciente') }}"><i class="fas fa-user-plus"></i> Adicionar Paciente</a>
+          </li>
+          <li><a href="{{ url_for('lista_pacientes') }}"><i class="fas fa-users"></i> Lista de Pacientes</a></li>
+          <li><a href="{{ url_for('profissionais') }}"><i class="fas fa-user-md"></i>
+              Profissionais</a></li>
+          <li>
+            <a href="{{ url_for('gemini') }}">
+              <i class="fas fa-brain"></i> Análise de Dados
+            </a>
+          </li>
+          <li><a href="{{ url_for('config_empresa') }}"><i class="fas fa-cogs"></i> Configurações</a></li>
+          <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <header class="content-header">
+        <h1>Painel do Estabelecimento</h1>
+      </header>
+
+      <!-- FLASH -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+        <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <section class="box">
+        <h2>Pacientes em Atendimento</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Classificação</th>
+              <th>Início</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabelaAtendimento">
+            {% for p in em_atendimento %}
+            <tr data-id="{{ p.id }}">
+              <td>{{ p.nome }}</td>
+              <td>{{ p.cpf }}</td>
+              <td class="class-{{ p.classificacao }}">{{ p.classificacao }}</td>
+              <td>{{ p.inicio_atendimento.strftime('%H:%M') if p.inicio_atendimento else '-' }}</td>
+              <td>
+                <form action="{{ url_for('remover_em_atendimento_route', em_id=p.id) }}" method="POST">
+                  <button type="submit" class="btn-finalizar">Finalizar</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="metrics">
+        <div class="metric-card queue">
+          <i class="fas fa-clock"></i>
+          <h3>Na Fila</h3>
+          <p class="count" id="count-fila">5</p>
+          <span>Pacientes aguardando</span>
+        </div>
+        <div class="metric-card serving">
+          <i class="fas fa-user-nurse"></i>
+          <h3>Em Atendimento</h3>
+          <p class="count" id="count-atendimento">2</p>
+          <span>Pacientes sendo atendidos</span>
+        </div>
+        <div class="metric-card finished">
+          <i class="fas fa-check-circle"></i>
+          <h3>Finalizados (Hoje)</h3>
+          <p class="count" id="count-finalizado">5</p>
+          <span>Atendimentos concluídos</span>
+        </div>
+      </section>
+
+
+    </main>
+  </div>
+
+  <!-- SOCKET.IO -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    function carregarMetricas() {
+      fetch("/api/metricas")
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("count-fila").innerText = data.fila;
+          document.getElementById("count-atendimento").innerText = data.atendimento;
+          document.getElementById("count-finalizado").innerText = data.finalizados;
+        });
+    }
+
+    // inicia a conexão socket
+    const socket = io();
+
+    // Atualiza métricas sempre que houver mudança na fila
+    socket.on("update_fila", () => {
+      carregarMetricas();
+    });
+
+    // primeira carga
+    carregarMetricas();
+  </script>
+
+</body>
+
+</html>
