@@ -1,0 +1,7 @@
+Flask
+Werkzeug
+pandas
+matplotlib
+python-dotenv
+mysql-connector-python
+google-generativeai
