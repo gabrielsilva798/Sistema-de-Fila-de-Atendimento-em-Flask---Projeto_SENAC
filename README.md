@@ -6,6 +6,8 @@ Este projeto consiste em um **Sistema de Fila de Espera para Hospitais e Clínic
 
 O sistema foi pensado para melhorar a experiência do paciente e otimizar a gestão do estabelecimento de saúde, trazendo **transparência**, **previsibilidade** e **organização** ao processo de atendimento.
 
+![Langinpage](img/landingpage.png)
+
 ---
 
 ## 🚀 Diferencial do Projeto
@@ -25,6 +27,7 @@ Isso possibilita que o paciente possa, por exemplo:
 
 Tudo isso sem o medo de perder sua vez, pois ele tem **previsibilidade do atendimento**.
 
+![página de login](img/login.png)
 ---
 
 ## 👤 Funcionalidades do Paciente
@@ -46,6 +49,8 @@ No painel do paciente, é possível visualizar:
 
 Essas informações são atualizadas dinamicamente, garantindo **transparência e confiança**.
 
+![Fila do paciente](img/fila_paciente.png)
+
 ---
 
 ## 🏥 Funcionalidades do Estabelecimento (Hospital / Clínica)
@@ -63,6 +68,13 @@ O estabelecimento pode:
 * Finalizar atendimento;
 * Remover pacientes da fila ao encerrar o atendimento.
 
+Página de cadastro dos pacientes na fila
+![página de cadstrar pacientes](img/adc_pacientes.png)
+
+Fila de espera
+
+![página lista de pacientes](img/lista_paciente.png)
+
 ### 📊 Indicadores em Tempo Real
 
 O sistema exibe automaticamente:
@@ -73,6 +85,7 @@ O sistema exibe automaticamente:
   * 🩺 Em atendimento;
   * ✅ Atendimentos encerrados no dia.
 
+![dashboard](img/dashboard.png)
 ---
 
 ## 👨‍⚕️ Cadastro de Profissionais de Saúde
@@ -84,6 +97,12 @@ A clínica pode:
 
 Isso garante melhor organização e rastreabilidade dos atendimentos realizados.
 
+Gerenciamento de Profissionais
+![Profissionais](img/profissionais.png)
+
+Cdastro de Profissionais
+![Cadastrar novo Profissionais](img/cad_profissionais.png)
+
 ---
 
 ## 📈 Análise de Dados (Business Intelligence)
@@ -93,8 +112,10 @@ O sistema conta com uma **área de análise de dados**, onde o estabelecimento p
 * Fazer perguntas sobre os dados do próprio estabelecimento;
 * Receber como resposta:
 
-  * 📊 **Gráficos gerados com Matplotlib**;
-  * 📋 **Tabelas geradas com Pandas**;
+  * 📊 **Gráficos gerados com Matplotlib**;<br>
+  ![Gráfico](img/grafico.png)
+  * 📋 **Tabelas geradas com Pandas**;<br>
+  ![tabela](img/pandas.png)
 
 Esses recursos auxiliam na tomada de decisão, análise de fluxo de pacientes e desempenho diário.
 
@@ -107,7 +128,8 @@ Na área de configurações, o estabelecimento pode:
 * Alterar o nome da empresa;
 * Atualizar o e-mail de acesso;
 * Ativar ou desativar notificações;
-* Excluir a conta do sistema.
+* Excluir a conta do sistema.<br>
+![configuracoes](img/configuracoes.png)
 
 ---
 
@@ -233,21 +255,8 @@ O objetivo principal é:
 
 ---
 
-## 📌 Considerações Finais
-
-Este projeto demonstra a aplicação prática de **desenvolvimento web com Python**, **gestão de filas em tempo real** e **análise de dados**, sendo ideal para:
-
-* Hospitais;
-* Clínicas;
-* UPAs;
-* Qualquer estabelecimento que trabalhe com filas de atendimento.
-
-Ele pode ser facilmente expandido para incluir notificações por SMS, WhatsApp, integração com painéis físicos ou APIs externas.
-
----
-
 📄 **Projeto desenvolvido com foco em usabilidade, organização e análise de dados.**
-
+---
 ## 📌 Documentação das Rotas
 
 ---
@@ -597,6 +606,187 @@ flowchart TD
 * Atualizações automáticas da fila
 
 * Integração com banco de 
+---
+# 📊 Documentação do Banco de Dados – db_movida
+
+Este documento descreve a estrutura do banco de dados **db_movida**, utilizado em um sistema de gerenciamento clínico com controle de empresas, pacientes, fila de atendimento, atendimentos em andamento e profissionais de saúde.
+
+---
+
+## 🗄️ Informações Gerais
+
+- **Banco de Dados:** `db_movida`
+- **SGBD:** MySQL / MariaDB
+- **Charset:** `utf8mb4`
+- **Collation:** `utf8mb4_general_ci`
+- **Engine:** InnoDB
+
+---
+
+## 🧩 Estrutura das Tabelas
+
+### 👤 tb_clientes
+Armazena os dados de clientes do sistema.
+
+| Campo        | Tipo            | Descrição |
+|--------------|-----------------|-----------|
+| id           | INT (PK)        | Identificador único |
+| nome         | VARCHAR(100)    | Nome do cliente |
+| email        | VARCHAR(100)    | Email único |
+| nascimento   | VARCHAR(20)     | Data de nascimento |
+| cpf          | VARCHAR(20)     | CPF único |
+| rg           | VARCHAR(20)     | RG único |
+| senha        | VARCHAR(255)    | Senha criptografada |
+| criado_em    | TIMESTAMP       | Data de criação |
+
+---
+
+### 🏢 tb_empresa
+Representa clínicas, hospitais ou empresas de saúde.
+
+| Campo             | Tipo | Descrição |
+|-------------------|------|-----------|
+| id                | INT (PK) | Identificador da empresa |
+| nome              | VARCHAR(150) | Nome da empresa |
+| cnpj              | VARCHAR(18) | CNPJ único |
+| segmento          | ENUM | Tipo de instituição |
+| funcionarios      | INT | Quantidade de funcionários |
+| site              | VARCHAR(255) | Site institucional |
+| logo              | LONGBLOB | Logo da empresa |
+| email             | VARCHAR(150) | Email |
+| telefone          | VARCHAR(20) | Telefone |
+| cep               | VARCHAR(9) | CEP |
+| endereco          | VARCHAR(200) | Endereço |
+| cidade            | VARCHAR(120) | Cidade |
+| estado             | CHAR(2) | UF |
+| senha             | VARCHAR(255) | Senha |
+| confirmar_senha   | VARCHAR(255) | Confirmação da senha |
+| descricao         | TEXT | Descrição |
+| criado_em         | TIMESTAMP | Data de criação |
+
+---
+
+### 🧑‍⚕️ pacientes
+Armazena pacientes vinculados a uma empresa.
+
+| Campo | Tipo | Descrição |
+|------|------|-----------|
+| id | INT (PK) | Identificador do paciente |
+| cpf | VARCHAR(20) | CPF |
+| nome | VARCHAR(255) | Nome |
+| nascimento | DATE | Data de nascimento |
+| telefone | VARCHAR(20) | Telefone |
+| sintomas | TEXT | Sintomas relatados |
+| classificacao | ENUM | Nível de urgência |
+| responsavel | VARCHAR(255) | Responsável |
+| empresa_id | INT (FK) | Empresa vinculada |
+| entrada_inicio | TIMESTAMP | Entrada do paciente |
+| entrada_fim | TIMESTAMP | Saída |
+| criado_em | TIMESTAMP | Registro |
+
+🔗 **Relacionamento:**  
+`pacientes.empresa_id → tb_empresa.id`
+
+---
+
+### ⏳ fila
+Controla a fila de atendimento.
+
+| Campo | Tipo | Descrição |
+|------|------|-----------|
+| id | INT (PK) | Identificador |
+| paciente_id | INT (FK) | Paciente |
+| empresa_id | INT (FK) | Empresa |
+| chamado | BOOLEAN | Se foi chamado |
+| chegada | TIMESTAMP | Horário de chegada |
+| criado_em | TIMESTAMP | Registro |
+
+🔗 **Relacionamentos:**  
+- `paciente_id → pacientes.id`  
+- `empresa_id → tb_empresa.id`
+
+---
+
+### 🩺 em_atendimento
+Pacientes atualmente em atendimento.
+
+| Campo | Tipo | Descrição |
+|------|------|-----------|
+| id | INT (PK) | Identificador |
+| paciente_id | INT (FK) | Paciente |
+| empresa_id | INT (FK) | Empresa |
+| cpf | VARCHAR(20) | CPF |
+| nome | VARCHAR(255) | Nome |
+| nascimento | DATE | Nascimento |
+| telefone | VARCHAR(20) | Telefone |
+| sintomas | TEXT | Sintomas |
+| classificacao | ENUM | Urgência |
+| responsavel | VARCHAR(255) | Responsável |
+| inicio_atendimento | TIMESTAMP | Início |
+| fim_atendimento | TIMESTAMP | Fim |
+| criado_em | TIMESTAMP | Registro |
+
+---
+
+### 👨‍⚕️ profissionais
+Cadastro de profissionais da saúde.
+
+| Campo | Tipo | Descrição |
+|------|------|-----------|
+| id | INT (PK) | Identificador |
+| id_empresa | INT (FK) | Empresa |
+| nome_completo | VARCHAR(150) | Nome |
+| data_nascimento | DATE | Nascimento |
+| telefone | VARCHAR(15) | Telefone |
+| email_profissional | VARCHAR(100) | Email |
+| especialidade | VARCHAR(50) | Especialidade |
+| registro_crm_coren | VARCHAR(20) | Registro |
+| estado_crm | CHAR(2) | UF |
+| turno_atendimento | VARCHAR(10) | Turno |
+| status_clinica | VARCHAR(15) | Status |
+| informacoes_adicionais | TEXT | Observações |
+
+---
+
+## ⚡ Índices Criados
+
+- `idx_pacientes_empresa_cpf` → otimiza buscas por empresa e CPF
+- `idx_fila_empresa_chegada` → melhora ordenação da fila
+
+---
+
+## 🔗 Relacionamentos Principais
+
+- Uma **empresa** pode ter vários **pacientes**
+- Um **paciente** pode estar na **fila** ou em **atendimento**
+- Uma **empresa** possui vários **profissionais**
+
+---
+
+## 📌 Observações Finais
+
+Este banco foi projetado para:
+- Suportar múltiplas empresas
+- Controlar filas de atendimento
+- Registrar atendimentos em tempo real
+- Garantir integridade referencial com `FOREIGN KEYS`
+
+---
+
+📂 **Arquivo de inicialização:** `db_init.sql`
+
+---
+
+## 👾 Considerações Finais
+
+Este projeto demonstra a aplicação prática de **desenvolvimento web com Python**, **gestão de filas em tempo real** e **análise de dados**, sendo ideal para:
+
+* Hospitais;
+* Clínicas;
+* UPAs;
+* Qualquer estabelecimento que trabalhe com filas de atendimento.
+
+Ele pode ser facilmente expandido para incluir notificações por SMS, WhatsApp, integração com painéis físicos ou APIs externas.
 ---
 ## 📌 Encerramento
 
