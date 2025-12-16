@@ -2,8 +2,8 @@
 ### 🥂INTEGRANTES
 * Gabriel Silva dos Santos
 * Gilcelio da Silva Santos Júnior
-* Valérya Dias 
-* Tais Carvalho
+* Valérya Dias Braga
+* Tais Carvalho Nascimento
 ---
 ## 📌 Visão Geral
 
