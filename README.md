@@ -1,5 +1,10 @@
 # 🏥 Sistema de Fila Hospitalar em Tempo Real
-
+### 🥂INTEGRANTES
+* Gabriel Silva dos Santos
+* Gilcelio da Silva Santos Júnior
+* Valérya Dias 
+* Tais Carvalho
+---
 ## 📌 Visão Geral
 
 Este projeto consiste em um **Sistema de Fila de Espera para Hospitais e Clínicas**, desenvolvido em **Python com Flask**, cujo principal diferencial é permitir que o **paciente acompanhe sua posição na fila em tempo real diretamente pelo celular ou navegador**.
@@ -795,4 +800,4 @@ Este projeto foi desenvolvido como parte de um processo de aprendizado e prátic
 📂 **Repositório para clonagem:**  
 👉 https://github.com/gabrielsilva798/Sistema-de-Fila-de-Atendimento-em-Flask---Projeto_SENAC.git
 
-Agradeço ao **SENAC**, ao **Farol na Quebrada** e à **Serasa Experian** pela oportunidade, apoio e incentivo durante o desenvolvimento deste projeto, que foi fundamental para meu crescimento **técnico** e **profissional**.
+Agradeço ao **SENAC**, ao **Farol na Quebrada** e à **Serasa Experian** pela oportunidade, apoio e incentivo durante o desenvolvimento deste projeto, que foi fundamental para nosso crescimento **técnico** e **profissional**.
