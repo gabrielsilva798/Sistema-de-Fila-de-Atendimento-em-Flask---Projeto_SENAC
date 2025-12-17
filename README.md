@@ -807,7 +807,7 @@ Este banco foi projetado para:
 
 ---
 
-📂 **Arquivo de inicialização:** `db_init.sql`
+### 📂 **Arquivo de inicialização:** `db_init.sql`
 ---
 ## 🐳 Docker – Containerização da Aplicação
 
