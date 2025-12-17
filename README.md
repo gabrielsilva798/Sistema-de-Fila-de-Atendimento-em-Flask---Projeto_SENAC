@@ -154,6 +154,35 @@ O projeto foi desenvolvido em **Python**, utilizando as seguintes tecnologias e 
 * **Pandas** (análise e manipulação de dados)
 * **Matplotlib** (geração de gráficos)
 
+## ☁ Deploy na AWS
+Nosso sistema está pronto e documentado para computação em nuvem usando serviços da Cloud da AWS como:
+* <b>AWS EC2</b> (opcional ao ECS e FARGATE)
+* <b>AWS ECS</b>  (opcional ao FARGATE e EC2)
+* <b>AWS FARGATE</b> (opcional ao ECS e EC2)
+* <b>AWS RDS</b> (mysql)
+* <b>AWS VPC</b> (configurações de rede)
+* <b>AWS ALB</b> (para uma arquitetura sem gargalos)
+* <b>AWS AUTO SCALING</b> (para uma arquitetura escalável)
+* <b>AWS IAM</b> (para comunicação entre os serviços via Roles)
+* <b>AWS SECURITY GROUPS</b> (firewall para permitir somente as comunicações necessárias)
+* <b>AWS CLOUDWACTH</b> (para analisar o desempenho e gargalos em nossos serviços)
+
+Teremos 3 cenários para implantar o serviço via container (Dockr):
+* 1º com EC2 (posso implantar em container ou não)
+* 2º com ECS (serviço gerenciado de containers)
+* 3º com FARGATE (serviço gerenciado e serveless)
+
+---
+### 🐳 Docker
+
+A aplicação é executada em um **container Docker**, garantindo padronização entre ambientes de desenvolvimento e produção.  
+O backend Flask roda com **Gunicorn + Eventlet**, assegurando suporte a **Socket.IO** e comunicação em tempo real.
+
+- Porta interna do container: **8000**
+- Variáveis sensíveis via **.env**
+- Compatível com **AWS EC2, ECS e ECS Fargate**
+- Pronto para integração com **ALB e Auto Scaling**
+---
 ## 🛠️ Tecnologias, Bibliotecas e Dependências
 #### 🌐 Framework Web
 
@@ -768,7 +797,7 @@ Cadastro de profissionais da saúde.
 
 ---
 
-## 📌 Observações Finais
+## 💾 Observações Finais sobre o DATABASE
 
 Este banco foi projetado para:
 - Suportar múltiplas empresas
@@ -779,8 +808,419 @@ Este banco foi projetado para:
 ---
 
 📂 **Arquivo de inicialização:** `db_init.sql`
+---
+## 🐳 Docker – Containerização da Aplicação
+
+Este projeto utiliza **Docker** para padronizar o ambiente de execução da aplicação, facilitando o desenvolvimento local e o deploy em ambientes cloud como **AWS EC2, ECS e ECS Fargate**.
+
+A aplicação Flask é executada em produção utilizando **Gunicorn** com **Eventlet**, garantindo suporte a **Socket.IO** e comunicação em tempo real.
 
 ---
+
+### 📄 Dockerfile
+
+```dockerfile
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    default-libmysqlclient-dev \
+    python3-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["gunicorn", "-k", "eventlet", "-w", "1", "-b", "0.0.0.0:8000", "main:app"]
+```
+
+---
+
+### ▶️ Build da Imagem Docker
+
+```bash
+docker build -t projeto-movida .
+```
+
+---
+
+### 🚀 Execução do Container
+
+```bash
+docker run -d \
+  --name projeto-movida \
+  --env-file .env \
+  -p 5000:8000 \
+  projeto-movida
+```
+
+A aplicação ficará disponível em:
+
+```
+http://localhost:5000
+```
+
+---
+
+### 🔑 Observações Importantes
+
+- A aplicação roda **internamente na porta 8000**
+- A porta externa pode ser mapeada livremente (ex: `5000:8000`)
+- O arquivo `.env` **não é versionado** e é injetado em tempo de execução
+- Compatível com **Application Load Balancer (ALB)** da AWS
+- Suporte completo a **WebSocket / Socket.IO**
+- Pronto para **ECS e ECS Fargate**
+
+---
+
+### ✅ Benefícios do Uso do Docker
+
+- Ambiente consistente entre desenvolvimento e produção
+- Deploy simplificado
+- Facilidade de escalabilidade
+- Integração com pipelines de CI/CD
+
+📌 *Esta configuração segue boas práticas de containerização e arquitetura cloud moderna.*
+
+---
+# 🏥 Documentação Completa de Deploy na AWS
+
+## Sistema de Fila Hospitalar em Tempo Real
+
+Esta documentação descreve **uma arquitetura completa, segura e profissional na AWS** para o Sistema de Fila Hospitalar em Tempo Real, utilizando:
+
+* **Docker** para containerização da aplicação Flask
+* **Amazon RDS (MySQL)** como banco de dados gerenciado
+* **VPC personalizada com subnets públicas e privadas**
+* **IAM Roles e Policies** para comunicação segura entre serviços
+* **Cenários de deploy com EC2, ECS ou ECS Fargate**
+
+O objetivo é permitir que este material seja **copiado diretamente para o GitHub**, servindo como **documentação técnica, portfólio e base de estudo para Cloud / DevOps**.
+
+---
+
+## 📌 Visão Geral da Arquitetura
+
+A aplicação roda em containers Docker e se comunica com o banco MySQL hospedado no Amazon RDS, dentro de uma VPC isolada.
+
+### 📐 Arquitetura Geral
+
+```
+Internet
+   ↓
+Application Load Balancer (opcional)
+   ↓
+EC2 ou ECS/Fargate (Container Flask)
+   ↓
+Amazon RDS MySQL (Subnet Privada)
+```
+
+---
+
+## ☁️ Serviços AWS Utilizados
+
+* Amazon VPC
+* Amazon EC2
+* Amazon ECS / ECS Fargate
+* Amazon RDS (MySQL)
+* Amazon ECR
+* IAM (Roles e Policies)
+* Application Load Balancer (ALB)
+* CloudWatch Logs
+* Security Groups
+
+---
+
+## 🌐 VPC – Configuração de Rede
+
+### 🧱 Estrutura da VPC
+
+* CIDR da VPC: `10.0.0.0/16`
+
+### 🔹 Subnets
+
+| Tipo             | CIDR        | AZ         | Uso       |
+| ---------------- | ----------- | ---------- | --------- |
+| Subnet Pública A | 10.0.1.0/24 | us-east-1a | ALB / EC2 |
+| Subnet Pública B | 10.0.2.0/24 | us-east-1b | ALB       |
+| Subnet Privada A | 10.0.3.0/24 | us-east-1a | ECS / RDS |
+| Subnet Privada B | 10.0.4.0/24 | us-east-1b | ECS / RDS |
+
+### 🌍 Internet Gateway
+
+* Associado à VPC
+* Usado apenas pelas subnets públicas
+
+### 🔁 NAT Gateway
+
+* Criado em subnet pública
+* Permite acesso à internet para recursos em subnets privadas (ex: ECS baixar imagens)
+
+---
+
+## 🔐 Security Groups (Segurança de Rede)
+
+### 🔸 SG – Application Load Balancer
+
+* Entrada:
+
+  * HTTP 80 (0.0.0.0/0)
+  * HTTPS 443 (0.0.0.0/0)
+* Saída:
+
+  * All traffic
+
+### 🔸 SG – EC2 / ECS Tasks
+
+* Entrada:
+
+  * Porta 8000 (somente do SG do ALB)
+* Saída:
+
+  * All traffic
+
+### 🔸 SG – RDS MySQL
+
+* Entrada:
+
+  * Porta 3306 (somente do SG da aplicação)
+* Saída:
+
+  * All traffic
+
+---
+
+## 🗄️ Amazon RDS – Configuração Completa
+
+### 🔧 Parâmetros do Banco
+
+* Engine: MySQL
+* Versão: 8.x
+* Tipo: db.t3.micro (Free Tier)
+* Multi-AZ: Opcional
+* Storage: GP2 / GP3
+* Backup automático: Ativado
+* Retenção: 7 dias
+
+### 🔐 Segurança
+
+* RDS em **subnets privadas**
+* Acesso público: ❌ Desativado
+* Credenciais fora do código
+
+---
+
+## 🐳 Containerização da Aplicação
+
+### 📁 Estrutura do Projeto
+
+```
+Sistema-Fila-Hospitalar/
+│── app/
+│── static/
+│── templates/
+│── app.py
+│── requirements.txt
+│── Dockerfile
+│── .dockerignore
+│── .env (não versionado)
+```
+
+### 🧱 Dockerfile
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]
+```
+
+---
+
+## 🔐 IAM – Roles e Permissões
+
+### 🔹 Role para EC2 (EC2InstanceRole)
+
+Permite:
+
+* Pull de imagens no ECR
+* Escrita de logs no CloudWatch
+
+Policy:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+---
+
+### 🔹 Role para ECS Task (ecsTaskExecutionRole)
+
+Permite:
+
+* Pull de imagens no ECR
+* Logs no CloudWatch
+
+Policies gerenciadas:
+
+* AmazonECSTaskExecutionRolePolicy
+
+---
+
+## 🚀 Cenários de Deploy
+
+---
+
+## 🔵 CENÁRIO 1 — EC2 + Docker
+
+### 📌 Fluxo
+
+```
+Internet → EC2 → Container Flask → RDS
+```
+
+### ✅ Vantagens
+
+* Simples
+* Ideal para portfólio
+
+### ❌ Desvantagens
+
+* Escalabilidade manual
+
+---
+
+## 🟣 CENÁRIO 2 — ECS (EC2 Launch Type)
+
+### 📌 Fluxo
+
+```
+Internet → ALB → ECS Cluster → Tasks → RDS
+```
+
+### ✅ Vantagens
+
+* Alta disponibilidade
+* Controle de instâncias
+
+---
+
+## 🟢 CENÁRIO 3 — ECS Fargate (Recomendado)
+
+### 📌 Fluxo
+
+```
+Internet → ALB → ECS Fargate → RDS
+```
+
+### ✅ Vantagens
+
+* Sem servidores
+* Escalabilidade automática
+* Arquitetura moderna
+
+---
+
+## 🌐 Application Load Balancer
+
+* Listener HTTP 80 / HTTPS 443
+* Target Group: porta 8000
+* Health Check: `/`
+
+---
+
+## 🔐 Variáveis de Ambiente
+
+```env
+FLASK_ENV=production
+SECRET_KEY=sua_secret_key
+DB_HOST=endpoint-rds
+DB_USER=admin
+DB_PASSWORD=senha_forte
+DB_NAME=db_fila_hospital
+```
+
+---
+
+## 📊 Logs e Monitoramento
+
+* CloudWatch Logs
+* Métricas do ECS / EC2
+* Alarmes (opcional)
+
+---
+
+## 🔒 Boas Práticas de Segurança
+
+* Banco em subnet privada
+* SG restritivos
+* IAM com menor privilégio
+* Secrets fora do código
+* HTTPS com ACM
+
+---
+
+## 🚀 Evoluções Futuras
+
+* AWS Secrets Manager
+* CI/CD com GitHub Actions
+* Auto Scaling
+* WAF
+
+---
+
+## 🔊 Considerações sobre a aplicação implantada na AWS
+
+Esta documentação representa uma **arquitetura completa, profissional e alinhada ao mercado**, demonstrando domínio em:
+
+* AWS Networking
+* Docker
+* ECS / Fargate
+* Segurança em Cloud
+* Arquitetura escalável
+
+📄 Ideal para **GitHub, LinkedIn e entrevistas técnicas**.
 
 ## 👾 Considerações Finais
 
