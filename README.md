@@ -167,7 +167,7 @@ Nosso sistema está pronto e documentado para computação em nuvem usando servi
 * <b>AWS SECURITY GROUPS</b> (firewall para permitir somente as comunicações necessárias)
 * <b>AWS CLOUDWACTH</b> (para analisar o desempenho e gargalos em nossos serviços)
 
-Teremos 3 cenários para implantar o serviço via container (Dockr):
+Teremos 3 cenários para implantar o serviço via container (Docker):
 * 1º com EC2 (posso implantar em container ou não)
 * 2º com ECS (serviço gerenciado de containers)
 * 3º com FARGATE (serviço gerenciado e serveless)
