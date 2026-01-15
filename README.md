@@ -656,6 +656,9 @@ Este documento descreve a estrutura do banco de dados **db_movida**, utilizado e
 - **Engine:** InnoDB
 
 ---
+## 🍅 Modelo lógico
+![modelo_logico](img/modelo_logico.png)
+---
 
 ## 🧩 Estrutura das Tabelas
 
