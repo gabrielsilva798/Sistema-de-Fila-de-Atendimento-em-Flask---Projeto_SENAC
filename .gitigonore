@@ -1,2 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual (se usar)
+venv/
 .env
-prompt
+
+# VS Code
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
