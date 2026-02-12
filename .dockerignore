@@ -1,0 +1,30 @@
+# Ambiente virtual
+.env
+venv/
+.venv/
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git
+.gitignore
+
+# Arquivos de IDE (VS Code, etc)
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos desnecessários
+README.md
+prompt.txt
+
+# Docker
+Dockerfile
+.dockerignore
